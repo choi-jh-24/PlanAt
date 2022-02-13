@@ -1,10 +1,10 @@
-package com.example.myapplication;
+package com.example.planat;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MypageActivity extends AppCompatActivity {
+public class MyPageActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
