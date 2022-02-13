@@ -1,4 +1,4 @@
-package com.example.planat_origin;
+package com.example.planat;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -26,7 +26,6 @@ public class FindActivity extends AppCompatActivity implements View.OnClickListe
     private ProgressDialog progressDialog;
     //define firebase object
     private FirebaseAuth firebaseAuth;
-
 
 
     @Override

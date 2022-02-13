@@ -1,4 +1,4 @@
-package com.example.planat_origin;
+package com.example.planat;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,6 +27,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private TextView textViewUserEmail;
     private Button buttonLogout;
     private TextView textivewDelete;
+    private TextView textViewRoute;
 
 
     @Override
@@ -38,6 +39,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         textViewUserEmail = (TextView) findViewById(R.id.textviewUserEmail);
         buttonLogout = (Button) findViewById(R.id.buttonLogout);
         textivewDelete = (TextView) findViewById(R.id.textviewDelete);
+        textViewRoute = (TextView) findViewById(R.id.textViewRoute);
 
         //initializing firebase authentication object
         firebaseAuth = FirebaseAuth.getInstance();
@@ -56,6 +58,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         //logout button event
         buttonLogout.setOnClickListener(this);
         textivewDelete.setOnClickListener(this);
+        textViewRoute.setOnClickListener(this);
 
 
     }
@@ -80,7 +83,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                                         public void onComplete(@NonNull Task<Void> task) {
                                             Toast.makeText(ProfileActivity.this, "계정이 삭제 되었습니다.", Toast.LENGTH_LONG).show();
                                             finish();
-                                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                                         }
                                     });
                         }
@@ -93,6 +96,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 }
             });
             alert_confirm.show();
+        }
+        if(view == textViewRoute){
+            Intent intent = new Intent(getApplicationContext(), ScheduleActivity.class);
+            startActivity(intent);
         }
     }
 }
