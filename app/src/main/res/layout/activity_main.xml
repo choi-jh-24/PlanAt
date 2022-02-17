@@ -7,12 +7,21 @@
     android:id="@+id/listView"
     >
 
-    <CalendarView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+<!--    <CalendarView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/calendarView"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_margin="30dp"-->
+<!--        />-->
+
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/calendarView"
-        android:layout_gravity="center"
-        android:layout_margin="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:mcv_showOtherDates="all"
+        app:mcv_selectionColor="#00F"
         />
 
     <LinearLayout

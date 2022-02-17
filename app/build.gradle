@@ -59,7 +59,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth'
 
     //material calendarview
-    implementation 'com.github.prolificinteractive:material-calendarview:2.0.0'
+    implementation 'com.prolificinteractive:material-calendarview:1.4.3'
+
+    //kakao
+//    implementation "com.kakao.sdk:usermgmt:1.27.0"
 }
 
 apply plugin: 'com.android.application'

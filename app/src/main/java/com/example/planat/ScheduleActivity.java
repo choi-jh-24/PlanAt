@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -20,24 +19,21 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
-import java.sql.Array;
-import java.sql.Time;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ScheduleActivity extends AppCompatActivity{
-    CalendarView calendarView;
+    MaterialCalendarView materialcalendarView;
     LinearLayout listView;
     Button add_button,input_button,map_button;
     TextView text,time_text;
@@ -58,8 +54,9 @@ public class ScheduleActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        materialcalendarView = (MaterialCalendarView) findViewById(R.id.calendarView);//달력
+        //materialcalendarView.setSelectedDate(CalendarDay.today());
 
-        calendarView = findViewById(R.id.calendarView);//달력
         listView = findViewById(R.id.listView);//최상위 LinearLayout
         text = findViewById(R.id.text); //날짜 텍스트
         time_text = findViewById(R.id.time_text); //시간 텍스트
@@ -83,10 +80,9 @@ public class ScheduleActivity extends AppCompatActivity{
         timepicker = dialog.findViewById(R.id.timepicker);
         timepicker2 = dialog2.findViewById(R.id.timepicker);
 
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+        materialcalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
-            //캘린더 날짜 변경 시
-            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
+            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay cDay, boolean selected) {
                 curUserDate.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -107,8 +103,8 @@ public class ScheduleActivity extends AppCompatActivity{
                         }
                     }
                 });
-                text.setText(year+"년"+(month+1)+"월"+day+"일");
-                dateContents.put("day",year+"년"+(month+1)+"월"+day+"일");
+                //text.setText(materialcalendarView.getSelectedDate().toString());
+                dateContents.put("day",materialcalendarView.getSelectedDate().toString());
 
                 add_button.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -170,7 +166,8 @@ public class ScheduleActivity extends AppCompatActivity{
                                             }
                                         });
 
-                                time_text.setText(date+"");//달력 - time_text 텍스트 갱신
+                                //time_text.setText(date+"");//달력 - time_text 텍스트 갱신
+                                materialcalendarView.addDecorator(new EventDecorator(Color.RED, Collections.singleton(cDay)));
                                 dialog2.dismiss();
                             }
                         });
@@ -189,7 +186,6 @@ public class ScheduleActivity extends AppCompatActivity{
                     }
                 });
             }
-
         });
 
         map_button.setOnClickListener(new View.OnClickListener() {
