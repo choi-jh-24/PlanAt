@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,16 +16,21 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
+import java.sql.Array;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -41,15 +47,17 @@ public class ScheduleActivity extends AppCompatActivity{
     TimePicker timepicker,timepicker2;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    CollectionReference curUserDate = db.collection("users").document("leeseoooo@naver.com").collection("date");
 
-    Map<String, Object> startTime = new HashMap<>();
-    Map<String, Object> endTime = new HashMap<>();
+    DocumentReference curUserDate = db.collection("users").document("leeseoooo@naver.com");
+    ArrayList<Map>date; //dateContents 저장할 배열
+    Map<String,Object>dateContents = new HashMap<>(); //date field 안에 들어갈 시간 정보
+    Map<String,Object>schedule = new HashMap<>(); //curUserDate에 할당할 Map 객체
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         calendarView = findViewById(R.id.calendarView);//달력
         listView = findViewById(R.id.listView);//최상위 LinearLayout
@@ -79,7 +87,28 @@ public class ScheduleActivity extends AppCompatActivity{
             @Override
             //캘린더 날짜 변경 시
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
+                curUserDate.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.getData().get("date") != null) {
+                                date = (ArrayList<Map>) document.getData().get("date");
+                                Log.d("데이터", "DocumentSnapshot data: " + document.getData().get("date"));
+                            } else {
+                                //date field가 없다면 새로 생성
+                                date = new ArrayList<>();
+                                schedule.put("date",date);
+                                curUserDate.set(schedule);
+                                Log.d("필드없음", "No such document");
+                            }
+                        } else {
+                            Log.d("실패", "get failed with ", task.getException());
+                        }
+                    }
+                });
                 text.setText(year+"년"+(month+1)+"월"+day+"일");
+                dateContents.put("day",year+"년"+(month+1)+"월"+day+"일");
 
                 add_button.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -99,18 +128,14 @@ public class ScheduleActivity extends AppCompatActivity{
                             @Override
                             public void onTimeChanged(TimePicker timePicker, int h, int m) {
                                 hour = h; minute = m; //timepicker에서 선택한 시간으로 변수 할당
-                                startTime.put("start",year+"-"+month+"-"+day+" "+hour+":"+minute);
-
-                                Toast.makeText(getApplicationContext(), hour+" : "+minute, Toast.LENGTH_SHORT).show();
+                                dateContents.put("startTime",hour+":"+minute);
                             }
-
                         });
                     }
                 });
                 done_button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        time_text.setText(hour+" : "+minute);
                         dialog.dismiss();//1번창 끄고
                         dialog2.show();//2번다이얼로그 켜기
                         hour2 = timepicker2.getCurrentHour();
@@ -119,17 +144,33 @@ public class ScheduleActivity extends AppCompatActivity{
                         timepicker2.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
                             @Override
                             public void onTimeChanged(TimePicker timePicker, int h, int m) {
-                                hour2 =h; minute2 = m;
+                                hour2 = h; minute2 = m;
+                                dateContents.put("endTime",hour2+":"+minute2);
+                                Toast.makeText(getApplicationContext(), dateContents+"", Toast.LENGTH_LONG).show();
                             }
                         });
                         done_button2.setText("완료");
                         done_button2.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                time_text.setText(time_text.getText()+" ~ "+hour2+" : "+minute2);//달력 - time_text 텍스트 갱신
+                                date.add(dateContents); //dateContents 추가
+                                schedule.put("date",date);
 
-                                startTime.put("end",year+"-"+month+"-"+day+" "+hour2+":"+minute2);
-                                //curUserDate.add()
+                                curUserDate.update(schedule)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                //Toast.makeText(getApplicationContext(), "스케줄 저장 성공", Toast.LENGTH_SHORT).show();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w("docs error", "Error adding document", e);
+                                            }
+                                        });
+
+                                time_text.setText(date+"");//달력 - time_text 텍스트 갱신
                                 dialog2.dismiss();
                             }
                         });
