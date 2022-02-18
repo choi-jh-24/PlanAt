@@ -44,9 +44,9 @@ public class ScheduleActivity extends AppCompatActivity{
     Button cancel_button,cancel_button2,done_button,done_button2;
     TimePicker timepicker,timepicker2;
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseFirestore db;
 
-    DocumentReference curUserDate = db.collection("users").document("leeseoooo@naver.com");
+    DocumentReference curUserDate;
     ArrayList<Map>date; //dateContents 저장할 배열
     Map<String,Object>dateContents = new HashMap<>(); //date field 안에 들어갈 시간 정보
     Map<String,Object>schedule = new HashMap<>(); //curUserDate에 할당할 Map 객체
@@ -55,6 +55,11 @@ public class ScheduleActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        db = FirebaseFirestore.getInstance();
+        Intent intent = getIntent();
+        String userEmail = intent.getStringExtra("userEmail");
+        curUserDate = db.collection("users").document(userEmail);
 
         materialcalendarView = (MaterialCalendarView) findViewById(R.id.calendarView);//달력
         //firestore에 스케줄이 저장되어있는 날짜에는 모두 decorate 해주기

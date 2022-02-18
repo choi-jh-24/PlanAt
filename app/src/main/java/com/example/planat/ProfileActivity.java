@@ -3,6 +3,7 @@ package com.example.planat;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -29,6 +30,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private TextView textivewDelete;
     private TextView textViewRoute;
 
+    FirebaseUser user;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +53,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         //유저가 있다면, null이 아니면 계속 진행
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+        user = firebaseAuth.getCurrentUser();
 
         //textViewUserEmail의 내용을 변경해 준다.
         textViewUserEmail.setText("반갑습니다.\n"+ user.getEmail()+"으로 로그인 하였습니다.");
@@ -97,8 +100,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             });
             alert_confirm.show();
         }
-        if(view == textViewRoute){
+        if(view == textViewRoute){ //스케줄 등록하러 가기 텍스트를 눌렀을때
             Intent intent = new Intent(getApplicationContext(), ScheduleActivity.class);
+            //유저 정보 intent로 넘겨주면서 화면 이동
+            intent.putExtra("userEmail",user.getEmail());
             startActivity(intent);
         }
     }
