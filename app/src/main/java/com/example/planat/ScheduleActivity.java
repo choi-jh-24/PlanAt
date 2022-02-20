@@ -6,9 +6,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -38,7 +45,7 @@ public class ScheduleActivity extends AppCompatActivity{
     MaterialCalendarView materialcalendarView;
     LinearLayout listView;
     Button input_button,map_button;
-    TextView text,time_text,dialog_title;
+    TextView text,time_text,dialog_title,dialog_title2;
     Dialog dialog,dialog2; //시작시간~끝나는시간 다이얼로그
     long hour,minute,hour2,minute2;//시작시간:분 ~ 끝나는시간:분
     Button cancel_button,cancel_button2,done_button,done_button2;
@@ -62,6 +69,7 @@ public class ScheduleActivity extends AppCompatActivity{
         curUserDate = db.collection("users").document(userEmail);
 
         materialcalendarView = (MaterialCalendarView) findViewById(R.id.calendarView);//달력
+
         //firestore에 스케줄이 저장되어있는 날짜에는 모두 decorate 해주기
         curUserDate.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -102,17 +110,44 @@ public class ScheduleActivity extends AppCompatActivity{
         //커스텀 다이얼로그 생성
         dialog = new Dialog(ScheduleActivity.this);//시작시간 등록다이얼로그
         dialog2 = new Dialog(ScheduleActivity.this);//끝 시간 등록다이얼로그
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_timepicker);
+
+        dialog2.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog2.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog2.setContentView(R.layout.dialog_timepicker);
 
-        //다이얼로그 안에 있는 취소,완료버튼, 타이틀
-        dialog_title = (TextView)dialog2.findViewById(R.id.dialog_title);
-        dialog_title.setText("끝나는 시간을 선택해주세요");//두번째 다이얼로그 타이틀 초기화
 
+        //다이얼로그 타이틀 앞글자 색상 변경
+        dialog_title = (TextView)dialog.findViewById(R.id.dialog_title);
+        String content = dialog_title.getText().toString(); //텍스트 가져옴.
+        SpannableString spannableString = new SpannableString(content); //객체 생성
+        String word ="시작 시간";
+        int start = content.indexOf(word);
+        int end = start + word.length();
+        spannableString.setSpan(new ForegroundColorSpan(Color.rgb(26,188,156)), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        dialog_title.setText(spannableString);
+
+        dialog_title2 = (TextView)dialog2.findViewById(R.id.dialog_title);
+        dialog_title2.setText("⏰ 끝나는 시간을 선택해주세요");//두번째 다이얼로그 타이틀 초기화
+        content = dialog_title2.getText().toString(); //텍스트 가져옴.
+        spannableString = new SpannableString(content); //객체 생성
+        word ="끝나는 시간";
+        start = content.indexOf(word);
+        end = start + word.length();
+        spannableString.setSpan(new ForegroundColorSpan(Color.rgb(26,188,156)), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        dialog_title2.setText(spannableString);
+
+        //다이얼로그 안에 있는 취소,완료버튼
         cancel_button = dialog.findViewById(R.id.cancel_button);
         cancel_button2 = dialog2.findViewById(R.id.cancel_button);
         done_button = dialog.findViewById(R.id.done_button);
         done_button2 = dialog2.findViewById(R.id.done_button);
+        done_button2.setText("완료");
 
         timepicker = dialog.findViewById(R.id.timepicker);
         timepicker2 = dialog2.findViewById(R.id.timepicker);
@@ -157,9 +192,6 @@ public class ScheduleActivity extends AppCompatActivity{
                                 dateContents.put("endTime",hour2+":"+minute2);
                             }
                         });
-
-                        done_button2.setText("완료");
-                        dialog_title.setText("끝나는 시간을 선택해주세요");//두번째 다이얼로그 타이틀 초기화
 
                         done_button2.setOnClickListener(new View.OnClickListener() {
                             @Override
