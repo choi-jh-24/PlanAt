@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Planat_origin"
+
         android:usesCleartextTraffic="true" >
         <activity
             android:name=".SubActivity"
@@ -25,10 +26,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity> <activity android:name=".GoogleActivity" />
+        <activity android:name=".GReusltActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".ProfileActivity" />
-
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="6133e05b52428b0c484aa94b939d89a6" />

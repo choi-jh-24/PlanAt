@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,20 +26,20 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private FirebaseAuth firebaseAuth;
 
     //view objects
-    private TextView textViewUserEmail;
-    private Button buttonLogout;
-    private TextView textivewDelete;
+    private TextView tv_mymail;
+    private Button btnLogout;
+    private TextView textviewDelete;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_afterlogin);
 
         //initializing views
-        textViewUserEmail = (TextView) findViewById(R.id.textviewUserEmail);
-        buttonLogout = (Button) findViewById(R.id.buttonLogout);
-        textivewDelete = (TextView) findViewById(R.id.textviewDelete);
+        tv_mymail = (TextView) findViewById(R.id.tv_mymail);
+        btnLogout = (Button) findViewById(R.id.btnLogout);
+        textviewDelete = (TextView) findViewById(R.id.textviewDelete);
 
         //initializing firebase authentication object
         firebaseAuth = FirebaseAuth.getInstance();
@@ -51,24 +53,24 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
         //textViewUserEmail의 내용을 변경해 준다.
-        textViewUserEmail.setText("반갑습니다.\n"+ user.getEmail()+"으로 로그인 하였습니다.");
+        tv_mymail.setText(user.getEmail());
 
         //logout button event
-        buttonLogout.setOnClickListener(this);
-        textivewDelete.setOnClickListener(this);
+        btnLogout.setOnClickListener(this);
+        textviewDelete.setOnClickListener(this);
 
 
     }
 
     @Override
     public void onClick(View view) {
-        if (view == buttonLogout) {
+        if (view == btnLogout) {
             firebaseAuth.signOut();
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
         //회원탈퇴를 클릭하면 회원정보를 삭제한다. 삭제전에 컨펌창을 하나 띄워야 겠다.
-        if(view == textivewDelete) {
+        if(view == textviewDelete) {
             AlertDialog.Builder alert_confirm = new AlertDialog.Builder(ProfileActivity.this);
             alert_confirm.setMessage("정말 계정을 삭제 할까요?").setCancelable(false).setPositiveButton("확인", new DialogInterface.OnClickListener() {
                         @Override
@@ -95,4 +97,5 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             alert_confirm.show();
         }
     }
+
 }
