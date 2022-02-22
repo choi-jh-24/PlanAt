@@ -1,3 +1,5 @@
 
-rootProject.name = "PlanAt"
+rootProject.name = "planat"
+
+//rootProject.name = "PlanAt"
 include ':app'

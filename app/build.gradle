@@ -1,3 +1,5 @@
+//build.gralde(:app)
+
 plugins {
     id 'com.android.application'
 }
