@@ -1,19 +1,32 @@
 {
   "project_info": {
+<<<<<<< HEAD
     "project_number": "707621621887",
     "project_id": "planat-origin",
     "storage_bucket": "planat-origin.appspot.com"
+=======
+    "project_number": "653008285309",
+    "project_id": "planat-a5a11",
+    "storage_bucket": "planat-a5a11.appspot.com"
+>>>>>>> 0a5bf7bc4d16af7afdc35d9de863eab0cd87b38c
   },
   "client": [
     {
       "client_info": {
+<<<<<<< HEAD
         "mobilesdk_app_id": "1:707621621887:android:ac047fad287ee8ecfeef4a",
         "android_client_info": {
           "package_name": "com.example.planat_origin"
+=======
+        "mobilesdk_app_id": "1:653008285309:android:5940066f318f0815364b14",
+        "android_client_info": {
+          "package_name": "com.example.planat"
+>>>>>>> 0a5bf7bc4d16af7afdc35d9de863eab0cd87b38c
         }
       },
       "oauth_client": [
         {
+<<<<<<< HEAD
           "client_id": "707621621887-mi752qbqu5nib1pkdfgmbhcuc8mprhae.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -23,19 +36,38 @@
         },
         {
           "client_id": "707621621887-i4je8c284cff2hm8g1ub68b94804r7eq.apps.googleusercontent.com",
+=======
+          "client_id": "653008285309-ulepnperrb6g454tn3qo1f9qaqb8o785.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.planat",
+            "certificate_hash": "d91188112fc8ffcde376bb76d6b723cf3743749e"
+          }
+        },
+        {
+          "client_id": "653008285309-fnke8ni87aknpl4aluh3k8592i1jcf3u.apps.googleusercontent.com",
+>>>>>>> 0a5bf7bc4d16af7afdc35d9de863eab0cd87b38c
           "client_type": 3
         }
       ],
       "api_key": [
         {
+<<<<<<< HEAD
           "current_key": "AIzaSyAWlvquyRhZMZ0mdm2VpaIhC0_Zz6GjzH8"
+=======
+          "current_key": "AIzaSyCHBiXX6S-o3_zdqSZmtpTvrEfKTsvFitc"
+>>>>>>> 0a5bf7bc4d16af7afdc35d9de863eab0cd87b38c
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
+<<<<<<< HEAD
               "client_id": "707621621887-i4je8c284cff2hm8g1ub68b94804r7eq.apps.googleusercontent.com",
+=======
+              "client_id": "653008285309-fnke8ni87aknpl4aluh3k8592i1jcf3u.apps.googleusercontent.com",
+>>>>>>> 0a5bf7bc4d16af7afdc35d9de863eab0cd87b38c
               "client_type": 3
             }
           ]
