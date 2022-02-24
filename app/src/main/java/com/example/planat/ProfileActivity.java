@@ -28,23 +28,20 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private TextView tv_mymail;
     private Button btnLogout;
     private TextView textviewDelete;
-    private TextView textViewUserEmail;
-    private Button buttonLogout;
-    private TextView textivewDelete;
     private TextView textViewRoute;
 
     FirebaseUser user;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_afterlogin);
+        setContentView(R.layout.activity_profile);
 
         //initializing views
-        tv_mymail = (TextView) findViewById(R.id.tv_mymail);
+        tv_mymail = (TextView) findViewById(R.id.tv_mail);
         btnLogout = (Button) findViewById(R.id.btnLogout);
         textviewDelete = (TextView) findViewById(R.id.textviewDelete);
+        textViewRoute = (TextView) findViewById(R.id.textViewRoute);
 
         //initializing firebase authentication object
         firebaseAuth = FirebaseAuth.getInstance();
@@ -55,15 +52,15 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         //유저가 있다면, null이 아니면 계속 진행
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+        user = firebaseAuth.getCurrentUser();
 
         //textViewUserEmail의 내용을 변경해 준다.
-        textViewUserEmail.setText("반갑습니다.\n"+ user.getEmail()+"으로 로그인 하였습니다.");
+        tv_mymail.setText("반갑습니다.\n"+ user.getEmail()+"으로 로그인 하였습니다.");
 
         //logout button event
         btnLogout.setOnClickListener(this);
         textviewDelete.setOnClickListener(this);
-
+        textViewRoute.setOnClickListener(this);
 
     }
 

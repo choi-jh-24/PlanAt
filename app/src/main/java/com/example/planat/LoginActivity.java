@@ -28,7 +28,6 @@ import java.util.Map;
 
 import androidx.annotation.Nullable;
 import com.kakao.auth.ISessionCallback;
-
 import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.UserManagement;

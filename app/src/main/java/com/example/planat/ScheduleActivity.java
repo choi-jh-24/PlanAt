@@ -20,8 +20,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -30,6 +33,7 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,11 +41,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ScheduleActivity extends AppCompatActivity{
+public class ScheduleActivity extends AppCompatActivity implements View.OnClickListener {
     MaterialCalendarView materialcalendarView;
     LinearLayout listView;
-    Button input_button;
-    TextView text,time_text,dialog_title,dialog_title2,schedule_text;
+    Button input_button,map_button;
+    TextView text,time_text,dialog_title,dialog_title2;
     Dialog dialog,dialog2; //시작시간~끝나는시간 다이얼로그
     long hour,minute,hour2,minute2;//시작시간:분 ~ 끝나는시간:분
     Button cancel_button,cancel_button2,done_button,done_button2;
@@ -53,6 +57,8 @@ public class ScheduleActivity extends AppCompatActivity{
     ArrayList<Map>date; //dateContents 저장할 배열
     Map<String,Object>dateContents = new HashMap<>(); //date field 안에 들어갈 시간 정보
     Map<String,Object>schedule = new HashMap<>(); //curUserDate에 할당할 Map 객체
+
+    CalendarDay m_cDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +84,7 @@ public class ScheduleActivity extends AppCompatActivity{
                             String dateInfo = date.get(i).get("day").toString(); //DB의 date 필드의 i번째 index의 day 정보를 할당
                             String[] dateInfoArray = dateInfo.split("-"); //-기준으로 문자열 자르기
                             CalendarDay cDay = CalendarDay.from(Integer.parseInt(dateInfoArray[0]),Integer.parseInt(dateInfoArray[1])-1,Integer.parseInt(dateInfoArray[2]));
-                            //DB에 저장된 모든 day 정보에 대하여 점을 찍어준다.
+                            //DB에 저장된 모든 day 정보에추 대하여 점을 찍어준다.
                             materialcalendarView.addDecorator(new EventDecorator(Color.RED, Collections.singleton(cDay)));
                         }
                         Log.d("데이터", "DocumentSnapshot data: " + document.getData().get("date"));
@@ -95,47 +101,48 @@ public class ScheduleActivity extends AppCompatActivity{
             }
         });
 
-
-        listView = findViewById(R.id.listView);//최상위 LinearLayout
-        text = findViewById(R.id.text); //날짜 텍스트
-        time_text = findViewById(R.id.time_text); //시간 텍스트
-        input_button = findViewById(R.id.input_button); //다이얼로그 - 등록버튼
-
-        //커스텀 다이얼로그 생성
-        dialog = new Dialog(ScheduleActivity.this);//시작시간 등록다이얼로그
-        dialog2 = new Dialog(ScheduleActivity.this);//끝 시간 등록다이얼로그
-
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_timepicker);
-
-        dialog2.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog2.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog2.setContentView(R.layout.dialog_timepicker);
-
         {
-            final TextView first_dialog_title = dialog.findViewById(R.id.dialog_title);
-            String content = first_dialog_title.getText().toString(); //텍스트 가져옴.
+            listView = findViewById(R.id.listView);//최상위 LinearLayout
+            text = findViewById(R.id.text); //날짜 텍스트
+            time_text = findViewById(R.id.time_text); //시간 텍스트
+
+            input_button = findViewById(R.id.input_button); //다이얼로그 - 등록버튼
+//        map_button = findViewById(R.id.map_button);//지도 보는 버튼
+
+            //커스텀 다이얼로그 생성
+            dialog = new Dialog(ScheduleActivity.this);//시작시간 등록다이얼로그
+            dialog2 = new Dialog(ScheduleActivity.this);//끝 시간 등록다이얼로그
+
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.dialog_timepicker);
+
+            dialog2.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog2.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog2.setContentView(R.layout.dialog_timepicker);
+
+            //다이얼로그 타이틀 앞글자 색상 변경
+            dialog_title = (TextView) dialog.findViewById(R.id.dialog_title);
+            String content = dialog_title.getText().toString(); //텍스트 가져옴.
             SpannableString spannableString = new SpannableString(content); //객체 생성
             String word = "시작 시간";
             int start = content.indexOf(word);
             int end = start + word.length();
             spannableString.setSpan(new ForegroundColorSpan(Color.rgb(26, 188, 156)), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             spannableString.setSpan(new StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            first_dialog_title.setText(spannableString);
+            dialog_title.setText(spannableString);
 
-            final TextView second_dialog_title = dialog2.findViewById(R.id.dialog_title);
-            second_dialog_title.setText("⏰ 끝나는 시간을 선택해주세요");//두번째 다이얼로그 타이틀 초기화
-            content = second_dialog_title.getText().toString(); //텍스트 가져옴.
+            dialog_title2 = (TextView) dialog2.findViewById(R.id.dialog_title);
+            dialog_title2.setText("⏰ 끝나는 시간을 선택해주세요");//두번째 다이얼로그 타이틀 초기화
+            content = dialog_title2.getText().toString(); //텍스트 가져옴.
             spannableString = new SpannableString(content); //객체 생성
             word = "끝나는 시간";
             start = content.indexOf(word);
             end = start + word.length();
             spannableString.setSpan(new ForegroundColorSpan(Color.rgb(26, 188, 156)), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             spannableString.setSpan(new StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            second_dialog_title.setText(spannableString);
+            dialog_title2.setText(spannableString);
         }
-
         //다이얼로그 안에 있는 취소,완료버튼
         cancel_button = dialog.findViewById(R.id.cancel_button);
         cancel_button2 = dialog2.findViewById(R.id.cancel_button);
@@ -149,16 +156,19 @@ public class ScheduleActivity extends AppCompatActivity{
         materialcalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay cDay, boolean selected) {
-
+                m_cDay = cDay;
                 text.setText(cDay.getYear()+"-"+(cDay.getMonth()+1)+"-"+cDay.getDay());
                 text.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        //edit button 눌렀는지 체크할 TextView
+                        TextView flag = new TextView(ScheduleActivity.this);
+                        flag.setText("false");
                         ScheduleInfoDialogActivity infoDialog = new ScheduleInfoDialogActivity(ScheduleActivity.this);
-                        infoDialog.callFunction(text.getText().toString(),userEmail);
+                        infoDialog.callFunction(text.getText().toString(),userEmail,date);
+
                     }
                 });
-
 
                 dateContents.put("day",cDay.getYear()+"-"+(cDay.getMonth()+1)+"-"+cDay.getDay()); //캘린더의 day 정보를 contents에 저장
 
@@ -179,50 +189,8 @@ public class ScheduleActivity extends AppCompatActivity{
                         });
                     }
                 });
-                done_button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.dismiss();//1번창 끄고
-                        dialog2.show();//2번다이얼로그 켜기
-                        hour2 = timepicker2.getCurrentHour();
-                        minute2 = timepicker2.getCurrentMinute();
-
-                        timepicker2.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-                            @Override
-                            public void onTimeChanged(TimePicker timePicker, int h, int m) {
-                                hour2 = h; minute2 = m;
-                                dateContents.put("endTime",hour2+":"+minute2);
-                            }
-                        });
-
-                        done_button2.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                dateContents.put("id",date.size());
-                                date.add(dateContents); //dateContents 추가
-                                schedule.put("date",date);
-
-                                curUserDate.update(schedule);
-
-//                                time_text.setText("");//달력 - time_text 텍스트 갱신 - firestore에서 해당 day의 시간정보 끌고와서 저장
-                                materialcalendarView.addDecorator(new EventDecorator(Color.RED, Collections.singleton(cDay)));
-                                dialog2.dismiss();
-                            }
-                        });
-                        cancel_button2.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                dialog2.dismiss();
-                            }
-                        });
-                    }
-                });
-                cancel_button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.dismiss();
-                    }
-                });
+                done_button.setOnClickListener(ScheduleActivity.this);
+                cancel_button.setOnClickListener(ScheduleActivity.this);
             }
         });
 
@@ -233,5 +201,40 @@ public class ScheduleActivity extends AppCompatActivity{
 //            }
 //        });
 
+    }
+    @Override
+    public void onClick(View view){
+        if(view == done_button){
+            dialog.dismiss();//1번창 끄고
+            dialog2.show();//2번다이얼로그 켜기
+            hour2 = timepicker2.getCurrentHour();
+            minute2 = timepicker2.getCurrentMinute();
+
+            timepicker2.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+                @Override
+                public void onTimeChanged(TimePicker timePicker, int h, int m) {
+                    hour2 = h; minute2 = m;
+                    dateContents.put("endTime",hour2+":"+minute2);
+                }
+            });
+
+            done_button2.setOnClickListener(ScheduleActivity.this);
+            cancel_button2.setOnClickListener(ScheduleActivity.this);
+        }
+        else if(view == done_button2){
+            dateContents.put("id",date.size());
+            date.add(date.size(),dateContents);//dateContents 추가
+            schedule.put("date",date);
+
+            curUserDate.update(schedule);
+
+            materialcalendarView.addDecorator(new EventDecorator(Color.RED, Collections.singleton(m_cDay)));
+            dialog2.dismiss();
+            dateContents = new HashMap<>();
+        }
+        else if(view == cancel_button2 || view == cancel_button){
+            if(view == cancel_button)dialog.dismiss();
+            else dialog2.dismiss();
+        }
     }
 }
