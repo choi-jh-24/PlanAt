@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+<<<<<<< HEAD
         <entry key="..\:/Users/asdz4/AndroidStudioProjects/PlanAt-main/PlanAt-main/app/src/main/res/layout/activity_afterglogin.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/asdz4/AndroidStudioProjects/PlanAt-main/PlanAt-main/app/src/main/res/layout/activity_afterlogin.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/asdz4/AndroidStudioProjects/PlanAt-main/PlanAt-main/app/src/main/res/layout/activity_calendar.xml" value="0.25364583333333335" />
@@ -11,6 +12,8 @@
         <entry key="..\:/Users/asdz4/AndroidStudioProjects/PlanAt-main/PlanAt-main/app/src/main/res/layout/activity_main.xml" value="0.1125" />
         <entry key="..\:/Users/asdz4/AndroidStudioProjects/PlanAt-main/PlanAt-main/app/src/main/res/layout/activity_profile.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/asdz4/AndroidStudioProjects/PlanAt-main/PlanAt-main/app/src/main/res/layout/activity_sub.xml" value="0.16893115942028986" />
+=======
+>>>>>>> 5b0c7a29e280420e060f2ae1f18481d95a4a8c98
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.13240740740740742" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/drawable/circle.xml" value="0.1361111111111111" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/drawable/dialog_round_edge.xml" value="0.1195" />

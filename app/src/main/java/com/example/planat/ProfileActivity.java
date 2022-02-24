@@ -28,6 +28,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private TextView tv_mymail;
     private Button btnLogout;
     private TextView textviewDelete;
+    private TextView textViewUserEmail;
+    private Button buttonLogout;
+    private TextView textivewDelete;
+    private TextView textViewRoute;
+
+    FirebaseUser user;
 
 
     @Override
@@ -52,7 +58,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
         //textViewUserEmail의 내용을 변경해 준다.
-        tv_mymail.setText(user.getEmail());
+        textViewUserEmail.setText("반갑습니다.\n"+ user.getEmail()+"으로 로그인 하였습니다.");
 
         //logout button event
         btnLogout.setOnClickListener(this);
@@ -95,6 +101,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             });
             alert_confirm.show();
         }
+        if(view == textViewRoute){ //스케줄 등록하러 가기 텍스트를 눌렀을때
+            Intent intent = new Intent(getApplicationContext(), ScheduleActivity.class);
+            //유저 정보 intent로 넘겨주면서 화면 이동
+            intent.putExtra("userEmail",user.getEmail());
+            startActivity(intent);
+        }
     }
-
 }

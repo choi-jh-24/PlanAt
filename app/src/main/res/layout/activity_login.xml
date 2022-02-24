@@ -59,12 +59,6 @@
         android:layout_gravity="center_horizontal"
         android:id="@+id/kakaoSignup"/>
 
-<!--<com.kakao.usermgmt.LoginButton-->
-<!--    android:layout_width="200dp"-->
-<!--    android:layout_height="wrap_content"-->
-<!--    android:layout_gravity="center_horizontal"-->
-<!--    android:id="@+id/kakaoSignup"/>-->
-
 
     <LinearLayout
         android:orientation="horizontal"

@@ -1,33 +1,21 @@
 package com.example.planat;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -44,9 +32,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        getAppKeyHash();
 
+        setContentView(R.layout.activity_signup);
 
         //initializig firebase auth object
         firebaseAuth = FirebaseAuth.getInstance();
@@ -68,22 +55,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         //button click event
         buttonSignup.setOnClickListener(this);
         textviewSingin.setOnClickListener(this);
-    }
-    public void getAppKeyHash() {
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
-
-            for (Signature signature : info.signatures) {
-                MessageDigest md;
-                md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                String something = new String(Base64.encode(md.digest(), 0));
-                Log.e("Hash Key", something);
-            }
-        }
-        catch(Exception e){
-            Log.e("name not found", e.toString());
-        }
     }
 
     //Firebse creating a new user
@@ -138,6 +109,3 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     }
 
 }
-
-
-
