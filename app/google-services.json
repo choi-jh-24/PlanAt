@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "653008285309",
+    "project_id": "planat-a5a11",
+    "storage_bucket": "planat-a5a11.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:653008285309:android:5940066f318f0815364b14",
+        "android_client_info": {
+          "package_name": "com.example.planat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "653008285309-ulepnperrb6g454tn3qo1f9qaqb8o785.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.planat",
+            "certificate_hash": "d91188112fc8ffcde376bb76d6b723cf3743749e"
+          }
+        },
+        {
+          "client_id": "653008285309-fnke8ni87aknpl4aluh3k8592i1jcf3u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHBiXX6S-o3_zdqSZmtpTvrEfKTsvFitc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "653008285309-fnke8ni87aknpl4aluh3k8592i1jcf3u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
