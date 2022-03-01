@@ -3,6 +3,7 @@
     package="com.example.planat">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
@@ -19,18 +20,19 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="6133e05b52428b0c484aa94b939d89a6" />
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="mnu1q7kinz" />
 
         <activity android:name=".SubActivity"/>
         <activity android:name=".SignupActivity"/>
         <activity android:name=".ProfileActivity"/>
-        <activity android:name=".DialogActivity"/>
         <activity android:name=".MiddlePlaceActivity"/>
         <activity android:name=".ScheduleActivity"/>
         <activity android:name=".MyPageActivity"/>

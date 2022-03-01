@@ -7,12 +7,59 @@
     android:id="@+id/listView"
     >
 
-    <fragment
-        android:id="@+id/map_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="com.naver.maps.map.MapFragment" />
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        >
+        <EditText
+            android:id="@+id/edit_text"
+            android:ems="10"
+            android:hint="주소를 입력하세요."
+            android:inputType="text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+        <Button
+            android:id="@+id/search_button"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/mint"
+            android:text="검색"
+            />
+    </LinearLayout>
 
+    <fragment
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/map_fragment"
+        android:name="com.naver.maps.map.MapFragment"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        app:navermap_latitude="37.54647497980168"
+        app:navermap_longitude="126.96458430912304"
+        />
+
+    <ImageButton
+        android:id="@+id/add_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/icon_add"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="아래 버튼을 누르면 중간지점이 나옵니다"
+        />
+    <Button
+        android:id="@+id/result_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="중간지점"
+        android:backgroundTint="@color/mint"
+        />
 
 
 </LinearLayout>

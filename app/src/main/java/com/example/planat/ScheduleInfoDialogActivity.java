@@ -2,7 +2,6 @@ package com.example.planat;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -10,23 +9,20 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -53,7 +49,7 @@ public class ScheduleInfoDialogActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         DocumentReference curUserDate = db.collection("users").document(userEmail);
-        ArrayList<Map>new_date = date; //dateContents 저장할 배열
+        ArrayList<Map> new_date = date; //dateContents 저장할 배열
         final Map<String,Object>dateContents = new HashMap<>(); //date field 안에 들어갈 시간 정보
         Map<String,Object>schedule = new HashMap<>(); //curUserDate에 할당할 Map 객체
 
@@ -83,7 +79,7 @@ public class ScheduleInfoDialogActivity {
             }
         });
 
-        //수정 버튼 누르면 timepicker 다이얼로그 띄우기
+        //수정 버튼 누르면 다이얼로그 띄우기
         edit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,86 +87,29 @@ public class ScheduleInfoDialogActivity {
                 dateContents.put("day",selectedDate); //선택한 날짜 dateContents에 할당
 
                 Dialog editDialog = new Dialog(context);
-                Dialog editDialog2 = new Dialog(context);
 
                 editDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 editDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                editDialog.setContentView(R.layout.dialog_timepicker);
-
-                editDialog2.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                editDialog2.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                editDialog2.setContentView(R.layout.dialog_timepicker);
-                {
-                    //다이얼로그 타이틀 앞글자 색상 변경
-                    TextView dialog_title = editDialog.findViewById(R.id.dialog_title);
-                    String content = dialog_title.getText().toString(); //텍스트 가져옴.
-                    SpannableString spannableString = new SpannableString(content); //객체 생성
-                    String word = "시작 시간";
-                    int start = content.indexOf(word);
-                    int end = start + word.length();
-                    spannableString.setSpan(new ForegroundColorSpan(Color.rgb(26, 188, 156)), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    spannableString.setSpan(new StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    dialog_title.setText(spannableString);
-
-                    TextView dialog_title2 = editDialog2.findViewById(R.id.dialog_title);
-                    dialog_title2.setText("⏰ 끝나는 시간을 선택해주세요");//두번째 다이얼로그 타이틀 초기화
-                    content = dialog_title2.getText().toString(); //텍스트 가져옴.
-                    spannableString = new SpannableString(content); //객체 생성
-                    word = "끝나는 시간";
-                    start = content.indexOf(word);
-                    end = start + word.length();
-                    spannableString.setSpan(new ForegroundColorSpan(Color.rgb(26, 188, 156)), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    spannableString.setSpan(new StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    dialog_title2.setText(spannableString);
-                }
-                Button cancel_button = editDialog.findViewById(R.id.cancel_button);
-                Button cancel_button2 = editDialog2.findViewById(R.id.cancel_button);
-                Button done_button = editDialog.findViewById(R.id.done_button);
-                Button done_button2 = editDialog2.findViewById(R.id.done_button);
-                done_button2.setText("완료");
-
-                TimePicker timepicker = editDialog.findViewById(R.id.timepicker);
-                TimePicker timepicker2 = editDialog2.findViewById(R.id.timepicker);
+                editDialog.setContentView(R.layout.dialog_schedule);
 
                 editDialog.show();
 
-                timepicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-                    @Override
-                    public void onTimeChanged(TimePicker timePicker, int h, int m) {
-                        dateContents.put("startTime",h+":"+m);
-                    }
-                });
+                Button done_button = editDialog.findViewById(R.id.done_button);
+                Button cancel_button = editDialog.findViewById(R.id.cancel_button);
+                EditText et_title = editDialog.findViewById(R.id.et_title);
+                EditText et_time = editDialog.findViewById(R.id.et_time);
+
                 done_button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        editDialog.dismiss();//1번창 끄고
-                        editDialog2.show();//2번다이얼로그 켜기
+                        dateContents.put("id",index);
+                        dateContents.put("title",et_title.getText());
+                        dateContents.put("time",et_time.getText());
+                        new_date.set(index,dateContents); //해당 index의 내용 갱신
+                        schedule.put("date",new_date);
+                        curUserDate.update(schedule);
 
-                        timepicker2.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-                            @Override
-                            public void onTimeChanged(TimePicker timePicker, int h, int m) {
-                                dateContents.put("endTime",h+":"+m);
-                            }
-                        });
-
-                        done_button2.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                dateContents.put("id",index);
-                                new_date.set(index,dateContents); //해당 index의 내용 갱신
-                                schedule.put("date",new_date);
-
-                                curUserDate.update(schedule);
-                                editDialog2.dismiss();
-//                                dateContents = new HashMap<>();
-                            }
-                        });
-                        cancel_button2.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                editDialog2.dismiss();
-                            }
-                        });
+                        editDialog.dismiss();
                     }
                 });
                 cancel_button.setOnClickListener(new View.OnClickListener() {

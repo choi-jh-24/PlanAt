@@ -29,6 +29,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private Button btnLogout;
     private TextView textviewDelete;
     private TextView textViewRoute;
+    private TextView textViewRouteToMap;
 
     FirebaseUser user;
 
@@ -42,6 +43,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         btnLogout = (Button) findViewById(R.id.btnLogout);
         textviewDelete = (TextView) findViewById(R.id.textviewDelete);
         textViewRoute = (TextView) findViewById(R.id.textViewRoute);
+        textViewRouteToMap = findViewById(R.id.textViewRouteToMap);
 
         //initializing firebase authentication object
         firebaseAuth = FirebaseAuth.getInstance();
@@ -61,7 +63,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         btnLogout.setOnClickListener(this);
         textviewDelete.setOnClickListener(this);
         textViewRoute.setOnClickListener(this);
-
+        textViewRouteToMap.setOnClickListener(this);
     }
 
     @Override
@@ -102,6 +104,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             Intent intent = new Intent(getApplicationContext(), ScheduleActivity.class);
             //유저 정보 intent로 넘겨주면서 화면 이동
             intent.putExtra("userEmail",user.getEmail());
+            startActivity(intent);
+        }
+        if(view == textViewRouteToMap){
+            Intent intent = new Intent(getApplicationContext(), MiddlePlaceActivity.class);
             startActivity(intent);
         }
     }

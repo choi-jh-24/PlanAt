@@ -84,6 +84,13 @@
                 android:text="스케줄 등록하러 가기"
                 android:layout_gravity="center_horizontal" />
 
+            <TextView
+                android:id="@+id/textViewRouteToMap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="중간지점 하러 가기"
+                android:layout_gravity="center_horizontal" />
+
 
         </LinearLayout>
     </RelativeLayout>
