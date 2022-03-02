@@ -30,7 +30,7 @@
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="mnu1q7kinz" />
 
-        <activity android:name=".SubActivity"/>
+        <activity android:name=".KakoResultActivity"/>
         <activity android:name=".SignupActivity"/>
         <activity android:name=".ProfileActivity"/>
         <activity android:name=".MiddlePlaceActivity"/>

@@ -1,6 +1,7 @@
 package com.example.planat;
         import android.content.Intent;
         import android.os.Bundle;
+        import android.view.View;
         import android.widget.EditText;
         import android.widget.ImageView;
         import android.widget.TextView;
@@ -13,6 +14,8 @@ public class GResultActivity extends AppCompatActivity {
 
     private TextView tv_gName;
     private ImageView ic_launcher;
+    private TextView textAppbarUser;
+    private ImageView imageUser;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +30,23 @@ public class GResultActivity extends AppCompatActivity {
 
         ic_launcher = findViewById(R.id.ic_launcher);
         Glide.with(this).load(photoURL).into(ic_launcher);
+
+        textAppbarUser = findViewById(R.id.tv_name);
+        imageUser = findViewById(R.id.iv_photo);
+        textAppbarUser.setText(nickName);
+        Glide.with(this)
+                .load(photoURL)
+                .error(R.drawable.ico_default_image)
+                .circleCrop()
+                .into(imageUser);
+
+        imageUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GResultActivity.this, MyPageActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 

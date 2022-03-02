@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onSuccess(MeV2Response result) {
                         //로그인 성공
-                        Intent intent = new Intent(LoginActivity.this, SubActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, KakoResultActivity.class);
                         intent.putExtra("name", result.getKakaoAccount().getProfile().getNickname());
                         intent.putExtra("profileImg", result.getKakaoAccount().getProfile().getProfileImageUrl());
                         intent.putExtra("email", result.getKakaoAccount().getEmail());
