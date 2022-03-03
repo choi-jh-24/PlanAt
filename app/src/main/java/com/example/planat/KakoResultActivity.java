@@ -19,7 +19,7 @@ public class KakoResultActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_after_kakao_Login);
+        setContentView(R.layout.activity_after_kakao_login);
 
         Intent intent = getIntent();
         strNick = intent.getStringExtra("name");

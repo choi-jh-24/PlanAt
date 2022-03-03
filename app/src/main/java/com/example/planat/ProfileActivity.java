@@ -41,6 +41,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        //activity_profile은 자체로그인(회원가입)하고 닉네임,사진 입력하는 form 거친 후에 나오는 페이지
+        //after self login 은 입력 form인거죠
 
         //initializing views
         tv_mymail = (TextView) findViewById(R.id.tv_mail);
