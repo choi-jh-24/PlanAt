@@ -1,6 +1,7 @@
 package com.example.planat;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
@@ -12,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.naver.maps.geometry.LatLng;
@@ -33,6 +36,8 @@ import androidx.annotation.UiThread;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import static java.lang.Double.NaN;
+
 public class MiddlePlaceActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private String CLIENT_ID = "mnu1q7kinz";
@@ -42,10 +47,10 @@ public class MiddlePlaceActivity extends AppCompatActivity implements OnMapReady
     private double latitude = 37.54647497980168;
     private double longitude = 126.96458430912304;
     private ImageButton add_button;
-    private Button search_button;
+    private Button search_button, result_button, location_button;
     private EditText edit_text;
     private Vector<LatLng>markersPosition;
-    private Button result_button;
+    private TextView tv_result;
 
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -69,8 +74,10 @@ public class MiddlePlaceActivity extends AppCompatActivity implements OnMapReady
         add_button = findViewById(R.id.add_button);
         search_button = findViewById(R.id.search_button);
         edit_text = findViewById(R.id.edit_text);
-        result_button = findViewById(R.id.result_button);
+        result_button = findViewById(R.id.result_button); //중간지점 버튼
         markersPosition = new Vector<LatLng>(); //초기화
+        tv_result = findViewById(R.id.tv_result); //위치선택 버튼 클릭 시 주소 알려줄 텍스트뷰
+        location_button = findViewById(R.id.location_button); //위치선택 버튼
     }
     @UiThread
     @Override
@@ -148,19 +155,44 @@ public class MiddlePlaceActivity extends AppCompatActivity implements OnMapReady
                     lon += position.longitude;
                 }
                 LatLng point = new LatLng(lat/markersPosition.size(), lon/markersPosition.size());
+                List<Address>address = null;
+                try {
+                    address = geocoder.getFromLocation(
+                            lat/markersPosition.size(),
+                            lon/markersPosition.size(),
+                            // 이 예제에서는 하나의 주소만 받는다.
+                            1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
                 CameraUpdate cameraUpdate = CameraUpdate.scrollTo(point);
                 naverMap.moveCamera(cameraUpdate);
 
-                Marker marker = new Marker();
-                marker.setIcon(MarkerIcons.BLACK);
-                //그냥 RED만 추가하면 노란색으로 보여서 색상혼합에 덧입힐 검은색으로 초기화해줌
-                marker.setIconTintColor(Color.RED);
-                marker.setPosition(point);
-                // 마커 추가
-                marker.setMap(naverMap);
+                if(markersPosition.size() < 2){
+                    Toast.makeText(MiddlePlaceActivity.this, "최소 두 개 이상의 장소를 선택해주세요", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Marker marker = new Marker();
+                    marker.setIcon(MarkerIcons.BLACK);
+                    //그냥 RED만 추가하면 노란색으로 보여서 색상혼합에 덧입힐 검은색으로 초기화해줌
+                    marker.setIconTintColor(Color.RED);
+                    marker.setPosition(point);
+                    // 마커 추가
+                    marker.setMap(naverMap);
+
+                    tv_result.setText(address.get(0).getAddressLine(0));
+                }
             }
         });
-
+        location_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MiddlePlaceActivity.this,ScheduleActivity.class);
+                intent.putExtra("location",tv_result.getText());
+                setResult(RESULT_OK,intent);
+                finish();
+            }
+        });
     }
 }

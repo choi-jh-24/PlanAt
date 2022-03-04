@@ -38,6 +38,13 @@
         app:navermap_longitude="126.96458430912304"
         />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="마커 추가하기 !"
+        android:textSize="16dp"
+        />
+
     <ImageButton
         android:id="@+id/add_button"
         android:layout_width="50dp"
@@ -47,18 +54,34 @@
         android:backgroundTint="@color/white"
         android:src="@drawable/icon_add"
         />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+        <Button
+            android:id="@+id/location_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="위치 선택"
+            android:backgroundTint="@color/mint"
+            />
+        <View
+            android:layout_width="10dp"
+            android:layout_height="1dp"
+            />
+        <Button
+            android:id="@+id/result_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="중간지점"
+            android:backgroundTint="@color/mint"
+            />
+    </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="아래 버튼을 누르면 중간지점이 나옵니다"
-        />
-    <Button
-        android:id="@+id/result_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="중간지점"
-        android:backgroundTint="@color/mint"
         />
 
 

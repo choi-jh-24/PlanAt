@@ -1,6 +1,7 @@
 package com.example.planat;
         import android.content.Intent;
         import android.os.Bundle;
+        import android.util.Log;
         import android.view.View;
         import android.widget.Toast;
 
@@ -49,8 +50,10 @@ public class GoogleActivity extends AppCompatActivity implements GoogleApiClient
         gmailSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
                 startActivityForResult(intent, REO_SIGN_GOOGLE);
+                Log.d("출력","출력");
             }
         });
     }

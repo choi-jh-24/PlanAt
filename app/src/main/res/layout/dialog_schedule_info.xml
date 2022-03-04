@@ -7,61 +7,77 @@
     android:layout_gravity="center"
     android:background="@drawable/dialog_round_edge"
     >
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:gravity="center"
-        android:textSize="25dp"
-        android:text="스케줄 정보"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:background="@color/mint"
-        />
-
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/mint"
         >
         <TextView
-            android:id="@+id/schedule_text"
             android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:text="시간"
-            android:textAlignment="center"
-            android:textSize="20dp"
-            />
-        <View
-            android:layout_width="20dp"
-            android:layout_height="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:textSize="25dp"
+            android:text="스케줄 정보"
+            android:textColor="@color/white"
+            android:textStyle="bold"
             />
         <ImageButton
             android:id="@+id/edit_button"
             android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             android:src="@drawable/icon_edit"
-            android:background="@color/white"
+            android:background="@color/mint"
+            android:layout_marginRight="20dp"
+            />
+        <ImageButton
+            android:id="@+id/close_button"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_close"
+            android:background="@color/mint"
             android:layout_marginRight="20dp"
             />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:gravity="center"
+        android:layout_height="200dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
         >
-
-        <Button
-            android:id="@+id/ok_button"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:text="확인"
-            android:textSize="20dp"
-            android:backgroundTint="@color/mint"
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:text="제목"
+            android:textStyle="bold"
+            android:textSize="30dp"
             />
-
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="50dp"
+            android:text="시간"
+            android:textSize="25dp"
+            />
+        <TextView
+            android:id="@+id/tv_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:text="장소"
+            android:textSize="25dp"
+            />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="10dp"
+            />
     </LinearLayout>
 
 </LinearLayout>
