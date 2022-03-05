@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +32,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private TextView textviewDelete;
     private TextView textViewRoute;
     private TextView textViewRouteToMap;
+    private TextView textAppbarUser;
+    private ImageView imageUser;
 
     FirebaseUser user;
 
@@ -44,6 +48,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         textviewDelete = (TextView) findViewById(R.id.textviewDelete);
         textViewRoute = (TextView) findViewById(R.id.textViewRoute);
         textViewRouteToMap = findViewById(R.id.textViewRouteToMap);
+        textAppbarUser = findViewById(R.id.tv_name);
+        imageUser = findViewById(R.id.iv_photo);
 
         //initializing firebase authentication object
         firebaseAuth = FirebaseAuth.getInstance();
@@ -56,14 +62,25 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         //유저가 있다면, null이 아니면 계속 진행
         user = firebaseAuth.getCurrentUser();
 
+        /* user photo url 적용된다면 이미지 변경됩니다.  */
+        Glide.with(this)
+                .load(user.getPhotoUrl())
+                .error(R.drawable.ico_default_image)
+                .circleCrop()
+                .into(imageUser);
+
         //textViewUserEmail의 내용을 변경해 준다.
         tv_mymail.setText("반갑습니다.\n"+ user.getEmail()+"으로 로그인 하였습니다.");
 
+        /* user 이름을 넣어도 될것 같아요  */
+//        textAppbarUser.setText(user.getDisplayName());
+        textAppbarUser.setText(user.getEmail());
         //logout button event
         btnLogout.setOnClickListener(this);
         textviewDelete.setOnClickListener(this);
         textViewRoute.setOnClickListener(this);
         textViewRouteToMap.setOnClickListener(this);
+        imageUser.setOnClickListener(this);
     }
 
     @Override
@@ -108,6 +125,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
         if(view == textViewRouteToMap){
             Intent intent = new Intent(getApplicationContext(), MiddlePlaceActivity.class);
+            startActivity(intent);
+        }
+
+        if (view == imageUser) {
+            Intent intent = new Intent(this, MyPageActivity.class);
             startActivity(intent);
         }
     }

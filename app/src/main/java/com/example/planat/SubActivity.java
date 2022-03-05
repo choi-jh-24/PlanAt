@@ -13,6 +13,9 @@ package com.example.planat;
 
 public class SubActivity extends AppCompatActivity {
     private String strNick, strProfileImg, strEmail;
+    private TextView tvAppbarName;
+    private ImageView ivAppbarImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +29,9 @@ public class SubActivity extends AppCompatActivity {
         TextView tv_nick = findViewById(R.id.tv_nickName);
         TextView tv_email = findViewById(R.id.tv_email);
         ImageView iv_profile = findViewById(R.id.iv_profile);
+        tvAppbarName = findViewById(R.id.tv_name);
+        ivAppbarImage = findViewById(R.id.iv_photo);
+
         //닉네임 set
         tv_nick.setText(strNick);
         //이메일 set
@@ -44,6 +50,21 @@ public class SubActivity extends AppCompatActivity {
                         finish(); //현재 엑티비티 종료
                     }
                 });
+            }
+        });
+
+        tvAppbarName.setText(strNick);
+        Glide.with(this)
+                .load(strProfileImg)
+                .error(R.drawable.ico_default_image)
+                .circleCrop()
+                .into(ivAppbarImage);
+
+        ivAppbarImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SubActivity.this, MyPageActivity.class);
+                startActivity(intent);
             }
         });
 
