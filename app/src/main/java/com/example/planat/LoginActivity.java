@@ -2,6 +2,7 @@ package com.example.planat;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -46,6 +47,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     TextView textviewMessage;
     TextView textviewFindPassword;
     ProgressDialog progressDialog;
+    private String Imageiv_profile;
     //define firebase object
     FirebaseAuth firebaseAuth;
 
@@ -121,7 +123,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         textviewFindPassword = (TextView) findViewById(R.id.textViewFindpassword);
         buttonSignin = (Button) findViewById(R.id.buttonSignup);
         progressDialog = new ProgressDialog(this);
-
+        //final String phoneNumber = ((EditText) findViewById(R.id.Imageiv_profile)).getText().toString();
         //button click event
         buttonSignin.setOnClickListener(this);
         textviewSingin.setOnClickListener(this);

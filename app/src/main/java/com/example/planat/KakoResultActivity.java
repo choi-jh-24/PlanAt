@@ -63,6 +63,7 @@ public class KakoResultActivity extends AppCompatActivity {
         ivAppbarImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(KakoResultActivity.this, MyPageActivity.class);
                 startActivity(intent);
             }
