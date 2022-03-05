@@ -25,6 +25,7 @@
             android:id="@+id/et_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textStyle="normal"
             android:hint="일정을 입력하세요."
             android:ems="13"
             />
@@ -49,6 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="시간을 입력하세요."
+            android:textStyle="normal"
             android:ems="13"
             />
     </LinearLayout>
@@ -77,6 +79,7 @@
                 android:id="@+id/et_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textStyle="normal"
                 android:hint="지도에서 장소를 선택해주세요."
                 />
             <ImageButton

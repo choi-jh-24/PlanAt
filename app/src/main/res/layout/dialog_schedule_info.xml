@@ -4,41 +4,32 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center"
-    android:layout_gravity="center"
     android:background="@drawable/dialog_round_edge"
     >
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@color/mint"
         >
-        <TextView
+        <View
             android:layout_width="200dp"
             android:layout_height="60dp"
-            android:gravity="center"
-            android:textSize="25dp"
-            android:text="스케줄 정보"
-            android:textColor="@color/white"
-            android:textStyle="bold"
             />
+
         <ImageButton
             android:id="@+id/edit_button"
-            android:layout_width="40dp"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
+            android:backgroundTint="@color/white"
             android:scaleType="fitCenter"
-            android:src="@drawable/icon_edit"
-            android:background="@color/mint"
-            android:layout_marginRight="20dp"
-            />
+            android:src="@drawable/icon_edit" />
         <ImageButton
             android:id="@+id/close_button"
-            android:layout_width="40dp"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
             android:src="@drawable/icon_close"
-            android:background="@color/mint"
+            android:scaleType="fitCenter"
+            android:backgroundTint="@color/white"
             android:layout_marginRight="20dp"
             />
     </LinearLayout>
@@ -55,6 +46,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:text="제목"
+            android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="30dp"
             />

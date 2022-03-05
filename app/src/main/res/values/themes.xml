@@ -16,5 +16,9 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:windowFullscreen">true</item>
+
+        <item name="android:textViewStyle">@style/TextViewFontStyle</item>
+        <item name="android:buttonStyle">@style/ButtonFontStyle</item>
+        <item name="android:editTextStyle">@style/EditTextFontStyle</item>
     </style>
 </resources>
