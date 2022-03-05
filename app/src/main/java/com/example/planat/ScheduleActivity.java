@@ -39,22 +39,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ScheduleActivity extends AppCompatActivity implements View.OnClickListener {
-    MaterialCalendarView materialcalendarView;
-    LinearLayout listView;
-    Button add_button;
-    TextView text;
-    EditText et_title,et_time,et_location;
-    Dialog dialog; //일정 등록 다이얼로그
-    Button cancel_button,done_button;
-    ImageButton map_button;
+    private MaterialCalendarView materialcalendarView;
+    private LinearLayout listView;
+    private Button add_button;
+    private TextView text;
+    private EditText et_title,et_time,et_location;
+    private Dialog dialog; //일정 등록 다이얼로그
+    private Button cancel_button,done_button;
+    private ImageButton map_button;
 
-    FirebaseFirestore db;
+    private FirebaseFirestore db;
 
-    DocumentReference docs;
-    Map<String, Object> contents = new HashMap<>(); //제목,시간,위치 집어넣을 Map
-    Map<String,Object> contentsTitle = new HashMap<>(); //클릭한 날짜를 제목으로 contents를 저장할 Map
+    private DocumentReference docs;
+    private Map<String, Object> contents = new HashMap<>(); //제목,시간,위치 집어넣을 Map
+    private Map<String,Object> contentsTitle = new HashMap<>(); //클릭한 날짜를 제목으로 contents를 저장할 Map
 
-    CalendarDay m_cDay;
+    private CalendarDay m_cDay;
 
     //중간지점 구하기 눌렀을 때 result 콜백으로 받기 위한 런처
     ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(
@@ -104,14 +104,12 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         materialcalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay cDay, boolean selected) {
-                m_cDay = cDay;
+                m_cDay = cDay;//캘린더에서 선택한 cDay로 갱신
                 text.setText(cDay.getYear()+"-"+(cDay.getMonth()+1)+"-"+cDay.getDay());
                 text.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         //edit button 눌렀는지 체크할 TextView
-                        TextView flag = new TextView(ScheduleActivity.this);
-                        flag.setText("false");
                         ScheduleInfoDialogActivity infoDialog = new ScheduleInfoDialogActivity(ScheduleActivity.this);
                         infoDialog.callFunction(m_cDay,userEmail);
                     }
@@ -122,7 +120,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                 map_button.setOnClickListener(ScheduleActivity.this);
             }
         });
-        //캘린더뷰에서 월을 바꿀 때마다 db에서 일정 체크표시 갱신
+        //캘린더뷰에서 month를 바꿀 때마다 db에서 일정 체크표시 갱신
         materialcalendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {

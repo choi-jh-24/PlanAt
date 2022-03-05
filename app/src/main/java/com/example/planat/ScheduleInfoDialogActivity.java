@@ -69,8 +69,6 @@ public class ScheduleInfoDialogActivity {
         final ImageButton edit_button = dialog.findViewById(R.id.edit_button);
         final ImageButton close_button = dialog.findViewById(R.id.close_button);
 
-        Object data; //해당 날짜에 해당하는 DB데이터
-
         docs.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -79,14 +77,17 @@ public class ScheduleInfoDialogActivity {
                     String key = cDay.getYear()+"-"+(cDay.getMonth()+1)+"-"+cDay.getDay();
                     String data = document.getData().get(key).toString();
                     String[] dateInfoArray = data.split(",");
-                    Log.d("TAG",dateInfoArray[0]+" "+dateInfoArray[1]+" "+dateInfoArray[2]);
-                    // 출력결과 : {location=클릭해서 중간지점을 찾아보세요!  time=12:00-14:00  title=대통령 선거
-//                    tv_title.setText();
+
+                    String str_location = dateInfoArray[0].substring(10);
+                    String str_time = dateInfoArray[1].substring(6);
+                    String str_title = dateInfoArray[2].substring(7);
+
+                    tv_location.setText(str_location);
+                    tv_time.setText(str_time);
+                    tv_title.setText(str_title);
                     }
                 }
             });
-
-
         contents.clear();
         contentsTitle.clear();
 
@@ -116,7 +117,12 @@ public class ScheduleInfoDialogActivity {
                 Button cancel_button = editDialog.findViewById(R.id.cancel_button);
                 EditText et_title = editDialog.findViewById(R.id.et_title);
                 EditText et_time = editDialog.findViewById(R.id.et_time);
-                TextView tv_location = editDialog.findViewById(R.id.tv_location);
+                EditText et_location = editDialog.findViewById(R.id.et_location);
+
+                //기존 db에 저장된 정보로 초기화 해줌
+                et_title.setText(tv_title.getText());
+                et_location.setText(tv_location.getText());
+                et_time.setText(tv_time.getText());
 
                 done_button.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -125,7 +131,7 @@ public class ScheduleInfoDialogActivity {
                         contents.put("day",key);
                         contents.put("title",et_title.getText().toString());
                         contents.put("time",et_time.getText().toString());
-                        contents.put("location",tv_location.getText().toString());
+                        contents.put("location",et_location.getText().toString());
 
                         contentsTitle.put(key,contents);
                         docs.update(contentsTitle);
