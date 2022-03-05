@@ -11,7 +11,7 @@ package com.example.planat;
         import com.kakao.usermgmt.UserManagement;
         import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
-public class SubActivity extends AppCompatActivity {
+public class KakoResultActivity extends AppCompatActivity {
     private String strNick, strProfileImg, strEmail;
     private TextView tvAppbarName;
     private ImageView ivAppbarImage;
@@ -19,7 +19,7 @@ public class SubActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sub);
+        setContentView(R.layout.activity_after_kakao_login);
 
         Intent intent = getIntent();
         strNick = intent.getStringExtra("name");
@@ -63,7 +63,8 @@ public class SubActivity extends AppCompatActivity {
         ivAppbarImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SubActivity.this, MyPageActivity.class);
+
+                Intent intent = new Intent(KakoResultActivity.this, MyPageActivity.class);
                 startActivity(intent);
             }
         });
