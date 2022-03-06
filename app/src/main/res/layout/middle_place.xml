@@ -18,12 +18,19 @@
             android:inputType="text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/et_border"
+            android:padding="10dp"
+            />
+        <View
+            android:layout_width="10dp"
+            android:layout_height="0dp"
             />
         <Button
             android:id="@+id/search_button"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/mint"
+            android:textStyle="normal"
             android:text="검색"
             />
     </LinearLayout>
@@ -38,32 +45,21 @@
         app:navermap_longitude="126.96458430912304"
         />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="마커 추가하기 !"
-        android:textSize="16dp"
-        />
-
-    <ImageButton
-        android:id="@+id/add_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
-        android:backgroundTint="@color/white"
-        android:src="@drawable/icon_add"
-        />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
         >
-        <Button
-            android:id="@+id/location_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="위치 선택"
-            android:backgroundTint="@color/mint"
+        <ImageButton
+            android:id="@+id/add_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/icon_location"
             />
         <View
             android:layout_width="10dp"
@@ -74,6 +70,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="중간지점"
+            android:textStyle="normal"
+            android:backgroundTint="@color/mint"
+            />
+        <View
+            android:layout_width="10dp"
+            android:layout_height="1dp"
+            />
+        <Button
+            android:id="@+id/location_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="normal"
+            android:text="위치 선택"
             android:backgroundTint="@color/mint"
             />
     </LinearLayout>

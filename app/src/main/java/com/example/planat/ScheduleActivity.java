@@ -1,6 +1,5 @@
 package com.example.planat;
 
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -10,9 +9,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -25,14 +22,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
@@ -40,13 +36,12 @@ import java.util.Map;
 
 public class ScheduleActivity extends AppCompatActivity implements View.OnClickListener {
     private MaterialCalendarView materialcalendarView;
-    private LinearLayout listView;
     private Button add_button;
-    private TextView text;
-    private EditText et_title,et_time,et_location;
+    private TextView text,tv_title,tv_time,tv_location;
+    private EditText et_title,et_time,et_location,et_title_inEtDlg,et_time_inEtDlg,et_location_inEtDlg;
     private Dialog dialog; //일정 등록 다이얼로그
-    private Button cancel_button,done_button;
-    private ImageButton map_button;
+    private Button cancel_button,done_button,done_button_inEtDlg,cancel_button_inEtDlg;
+    private ImageButton map_button,location_button_inEtDlg,edit_button,close_button,delete_button;
 
     private FirebaseFirestore db;
 
@@ -67,6 +62,17 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
             }
     );
 
+    //중간지점 구하기 눌렀을 때 result 콜백으로 받기 위한 런처 => in 수정 다이얼로그
+    ActivityResultLauncher<Intent> mStartForResultInEditDialog = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if(result.getResultCode() == RESULT_OK) {
+                    Intent intent = result.getData();
+                    et_location_inEtDlg.setText(intent.getStringExtra("location"));
+                }
+            }
+    );
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +88,6 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         //오늘 연,월,일로 m_cDay 초기화 후 해당 월의 일정 decorate
         this.handleDecorate(CalendarDay.today());
 
-        listView = findViewById(R.id.listView);//최상위 레이아웃
         text = findViewById(R.id.text); //날짜 텍스트
         add_button = findViewById(R.id.add_button); //일정 등록버튼
 
@@ -93,7 +98,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_schedule);
 
-        //다이얼로그 내부 요소 초기화
+        //등록 다이얼로그 내부 요소 초기화
         cancel_button = dialog.findViewById(R.id.cancel_button);
         done_button = dialog.findViewById(R.id.done_button);
         map_button = dialog.findViewById(R.id.map_button);
@@ -109,9 +114,166 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                 text.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //edit button 눌렀는지 체크할 TextView
-                        ScheduleInfoDialogActivity infoDialog = new ScheduleInfoDialogActivity(ScheduleActivity.this);
-                        infoDialog.callFunction(m_cDay,userEmail);
+                        //정보 다이얼로그
+                        final Dialog info_dialog = new Dialog(ScheduleActivity.this);
+                        info_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        info_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+                        info_dialog.setContentView(R.layout.dialog_schedule_info);
+                        info_dialog.show();
+
+                        //각 위젯 정의
+                        tv_title = info_dialog.findViewById(R.id.tv_title);
+                        tv_time = info_dialog.findViewById(R.id.tv_time);
+                        tv_location = info_dialog.findViewById(R.id.tv_location);
+                        edit_button = info_dialog.findViewById(R.id.edit_button);
+                        close_button = info_dialog.findViewById(R.id.close_button);
+                        delete_button = info_dialog.findViewById(R.id.delete_button);
+
+                        //해당 날짜 데이터 DB에서 가져오기
+                        docs.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    String key = cDay.getYear()+"-"+(cDay.getMonth()+1)+"-"+cDay.getDay();
+                                    String data = document.getData().get(key).toString();
+                                    String[] dateInfoArray = data.split(",");
+
+                                    String str_location = dateInfoArray[0].substring(10);
+                                    String str_time = dateInfoArray[1].substring(6);
+                                    String str_title = dateInfoArray[2].substring(7);
+
+                                    //수정 시 기존 데이터로 setText 초기화해줌
+                                    tv_location.setText(str_location);
+                                    tv_time.setText(str_time);
+                                    tv_title.setText(str_title);
+                                }
+                            }
+                        });
+                        //Map 초기화
+                        contents.clear();
+                        contentsTitle.clear();
+
+                        //닫기 버튼 - 정보 다이얼로그 끄기
+                        close_button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                info_dialog.dismiss();
+                            }
+                        });
+
+                        //수정 버튼(연필 이미지) 누르면 수정 다이얼로그 띄우기
+                        edit_button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                info_dialog.dismiss(); //정보 다이얼로그 닫고
+                                Dialog editDialog = new Dialog(ScheduleActivity.this);
+
+                                editDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                editDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                editDialog.setContentView(R.layout.dialog_schedule);
+
+                                editDialog.show();
+
+                                done_button_inEtDlg = editDialog.findViewById(R.id.done_button);
+                                cancel_button_inEtDlg = editDialog.findViewById(R.id.cancel_button);
+                                location_button_inEtDlg = editDialog.findViewById(R.id.map_button);
+                                et_title_inEtDlg = editDialog.findViewById(R.id.et_title);
+                                et_time_inEtDlg = editDialog.findViewById(R.id.et_time);
+                                et_location_inEtDlg = editDialog.findViewById(R.id.et_location);
+
+                                //기존 db에 저장된 정보로 초기화 해줌
+                                et_title_inEtDlg.setText(tv_title.getText());
+                                et_time_inEtDlg.setText(tv_time.getText());
+                                et_location_inEtDlg.setText(tv_location.getText());
+
+                                //수정 완료 버튼을 눌렀을 때
+                                done_button_inEtDlg.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        String key = m_cDay.getYear()+"-"+(m_cDay.getMonth()+1)+"-"+m_cDay.getDay();
+                                        contents.put("day",key);
+                                        contents.put("title",et_title.getText().toString());
+                                        contents.put("time",et_time.getText().toString());
+                                        contents.put("location",et_location.getText().toString());
+
+                                        contentsTitle.put(key,contents);
+                                        docs.update(contentsTitle);
+
+                                        //수정한 내용으로 텍스트 변경
+                                        tv_title.setText(et_title_inEtDlg.getText());
+                                        tv_time.setText(et_time_inEtDlg.getText());
+                                        tv_location.setText(et_location_inEtDlg.getText());
+
+                                        //초기화
+                                        contents.clear();
+                                        contentsTitle.clear();
+                                        editDialog.dismiss();
+                                        info_dialog.show();
+                                    }
+                                });
+                                cancel_button_inEtDlg.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        editDialog.dismiss();
+                                    }
+                                });
+                                //장소 등록 버튼 클릭 시 이동 => 수정 필요...
+                                location_button_inEtDlg.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Intent intent = new Intent(ScheduleActivity.this,MiddlePlaceActivity.class);
+                                        mStartForResultInEditDialog.launch(intent);
+                                    }
+                                });
+                            }
+                        });
+
+                        //삭제 버튼 - 삭제 의사 다시 한번 묻는 다이얼로그 켜주고 예/아니오로 분기
+                        delete_button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                final Dialog delete_dialog = new Dialog(ScheduleActivity.this);
+                                delete_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                delete_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+                                delete_dialog.setContentView(R.layout.dialog_check_delete);
+                                delete_dialog.show();
+
+                                Button noBtn = delete_dialog.findViewById(R.id.noBtn);
+                                Button yesBtn = delete_dialog.findViewById(R.id.yesBtn);
+
+                                //삭제 취소
+                                noBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        delete_dialog.dismiss();
+                                    }
+                                });
+                                //해당 데이터 삭제
+                                yesBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        //지울 데이터
+                                        Map<String,Object> dataFordelete = new HashMap<>();
+
+                                        String key = cDay.getYear()+"-"+(cDay.getMonth()+1)+"-"+cDay.getDay();
+                                        dataFordelete.put(key, FieldValue.delete());
+                                        docs.update(dataFordelete);
+
+                                        //열린 다이얼로그 다 닫기
+                                        delete_dialog.dismiss();
+                                        dialog.dismiss();
+
+                                        //decorate 갱신을 위해 액티비티 화면 refresh
+                                        Intent intent1 = getIntent();
+                                        finish();
+                                        startActivity(intent1);
+                                    }
+                                });
+                            }
+                        });
                     }
                 });
                 add_button.setOnClickListener(ScheduleActivity.this);
@@ -192,6 +354,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
             contentsTitle.clear();
             et_time.setText(null);
             et_title.setText(null);
+            et_location.setText(null);
 
             materialcalendarView.addDecorator(new EventDecorator(Color.RED, Collections.singleton(m_cDay)));
 
