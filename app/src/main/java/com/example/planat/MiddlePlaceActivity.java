@@ -2,9 +2,12 @@ package com.example.planat;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,11 +21,13 @@ import android.widget.Toast;
 
 
 import com.naver.maps.geometry.LatLng;
+import com.naver.maps.geometry.LatLngBounds;
 import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.MapFragment;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.NaverMapSdk;
 import com.naver.maps.map.OnMapReadyCallback;
+import com.naver.maps.map.overlay.CircleOverlay;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.util.FusedLocationSource;
 import com.naver.maps.map.util.MarkerIcons;
@@ -104,6 +109,7 @@ public class MiddlePlaceActivity extends AppCompatActivity implements OnMapReady
                 imm.hideSoftInputFromWindow(edit_text.getWindowToken(),0);
 
                 String str = edit_text.getText().toString();
+                edit_text.setText(null);
                 List<Address> addressList = null;
                 try {
                     // editText에 입력한 텍스트(주소, 지역, 장소 등)을 지오 코딩을 이용해 변환
@@ -114,10 +120,13 @@ public class MiddlePlaceActivity extends AppCompatActivity implements OnMapReady
                 catch (IOException e) {
                     e.printStackTrace();
                 }
-                Log.d("출력",addressList.get(0).toString());
+                if(addressList.size() == 0){
+                    Toast.makeText(MiddlePlaceActivity.this, "검색 결과가 없습니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Log.d("출력",addressList.toString());
                 // 콤마를 기준으로 split
                 String []splitStr = addressList.get(0).toString().split(",");
-//                String address = splitStr[0].substring(splitStr[0].indexOf("\"") + 1,splitStr[0].length() - 2); // 주소
 
                 String lat = splitStr[10].substring(splitStr[10].indexOf("=") + 1); // 위도
                 String lon = splitStr[12].substring(splitStr[12].indexOf("=") + 1); // 경도
@@ -181,7 +190,37 @@ public class MiddlePlaceActivity extends AppCompatActivity implements OnMapReady
                     // 마커 추가
                     marker.setMap(naverMap);
 
-                    tv_result.setText(address.get(0).getAddressLine(0));
+//                    CircleOverlay circle = new CircleOverlay();//서클 오버레이 객체 생성
+//                    circle.setCenter(new LatLng(point.latitude, point.longitude));//중심점은 중간지점 결과로 지정
+//                    circle.setRadius(500);//반경 500m로 지정
+//                    circle.setOutlineWidth(3);//테두리 두께
+//                    circle.setMap(naverMap);//지도에 붙이기
+//                    LatLngBounds bounds = circle.getBounds();
+//                    Log.d("TAG",bounds+"");
+
+                    if(address.size() > 0) {
+                        tv_result.setText(address.get(0).getAddressLine(0));
+                    }else{
+                        Toast.makeText(MiddlePlaceActivity.this, "중간결과가 없습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                    tv_result.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String url  = "nmap://route/public?dlat="+point.latitude+"&dlng="+point.longitude+"&dname="+tv_result.getText();
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                            startActivity(intent);
+                            Log.d("출력",url);
+
+//                            List<ResolveInfo> list = getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+//                            if (list == null || list.isEmpty()) {
+//                                Log.d("출력","안깔림");
+//                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.nhn.android.nmap")));
+//                            } else {
+//                                startActivity(intent);
+//                            }
+                        }
+                    });
                 }
             }
         });
