@@ -54,17 +54,6 @@
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/button2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:backgroundTint="@color/white"
-                android:gravity="left"
-                android:text="일정등록"
-                android:textColor="@color/black"
-                android:textStyle="bold"/>
-
-            <Button
                 android:id="@+id/button3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
