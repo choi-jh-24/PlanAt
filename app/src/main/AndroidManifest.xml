@@ -36,6 +36,16 @@
         <activity android:name=".MiddlePlaceActivity"/>
         <activity android:name=".ScheduleActivity"/>
         <activity android:name=".MyPageActivity"/>
+        <activity android:name=".kakaoShareActivity"/>
+
+        <intent-filter>
+            <action android:name = "android.intent.action.VIEW"/>
+            <action android:name="android.intent.category.DEFAULT"/>
+            <action android:name = "android.intent.category.BROWSABLE" />
+            <data android:name = "@string/kakao_scheme"
+                android:host = "@string/kakaolink_host" />
+
+        </intent-filter>
     </application>
 
 </manifest>

@@ -71,7 +71,10 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
     //카카오
     implementation "com.kakao.sdk:usermgmt:1.27.0"
+    implementation group: 'com.kakao.sdk', name: 'kakaolink', version: project.KAKAO_SDK_VERSION
 }
+
+
 
 apply plugin: 'com.android.application'
 
