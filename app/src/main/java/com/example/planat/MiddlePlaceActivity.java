@@ -190,14 +190,6 @@ public class MiddlePlaceActivity extends AppCompatActivity implements OnMapReady
                     // 마커 추가
                     marker.setMap(naverMap);
 
-//                    CircleOverlay circle = new CircleOverlay();//서클 오버레이 객체 생성
-//                    circle.setCenter(new LatLng(point.latitude, point.longitude));//중심점은 중간지점 결과로 지정
-//                    circle.setRadius(500);//반경 500m로 지정
-//                    circle.setOutlineWidth(3);//테두리 두께
-//                    circle.setMap(naverMap);//지도에 붙이기
-//                    LatLngBounds bounds = circle.getBounds();
-//                    Log.d("TAG",bounds+"");
-
                     if(address.size() > 0) {
                         tv_result.setText(address.get(0).getAddressLine(0));
                     }else{
