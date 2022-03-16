@@ -10,11 +10,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -37,11 +39,12 @@ import java.util.Map;
 public class ScheduleActivity extends AppCompatActivity implements View.OnClickListener {
     private MaterialCalendarView materialcalendarView;
     private Button add_button;
-    private TextView text,tv_title,tv_time,tv_location;
+    private TextView text,tv_title_info,tv_time_info,tv_location_info;
     private EditText et_title,et_time,et_location,et_title_inEtDlg,et_time_inEtDlg,et_location_inEtDlg;
     private Dialog dialog; //일정 등록 다이얼로그
     private Button cancel_button,done_button,done_button_inEtDlg,cancel_button_inEtDlg;
-    private ImageButton map_button,location_button_inEtDlg,edit_button,close_button,delete_button;
+    private ImageButton map_button,location_button_inEtDlg,edit_button_info,close_button_info,delete_button_info;
+    private ImageView iv_photo; //상단바 프로필 이미지뷰
 
     private FirebaseFirestore db;
 
@@ -106,6 +109,14 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         et_time = dialog.findViewById(R.id.et_time);
         et_location = dialog.findViewById(R.id.et_location);
 
+        iv_photo = findViewById(R.id.iv_photo);
+        iv_photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ScheduleActivity.this,MyPageActivity.class));
+            }
+        });
+
         materialcalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay cDay, boolean selected) {
@@ -123,12 +134,12 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                         info_dialog.show();
 
                         //각 위젯 정의
-                        tv_title = info_dialog.findViewById(R.id.tv_title);
-                        tv_time = info_dialog.findViewById(R.id.tv_time);
-                        tv_location = info_dialog.findViewById(R.id.tv_location);
-                        edit_button = info_dialog.findViewById(R.id.edit_button);
-                        close_button = info_dialog.findViewById(R.id.close_button);
-                        delete_button = info_dialog.findViewById(R.id.delete_button);
+                        tv_title_info = info_dialog.findViewById(R.id.tv_title);
+                        tv_time_info = info_dialog.findViewById(R.id.tv_time);
+                        tv_location_info = info_dialog.findViewById(R.id.tv_location);
+                        edit_button_info = info_dialog.findViewById(R.id.edit_button);
+                        close_button_info = info_dialog.findViewById(R.id.close_button);
+                        delete_button_info = info_dialog.findViewById(R.id.delete_button);
 
                         //해당 날짜 데이터 DB에서 가져오기
                         docs.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -145,9 +156,9 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                                     String str_title = dateInfoArray[2].substring(7);
 
                                     //수정 시 기존 데이터로 setText 초기화해줌
-                                    tv_location.setText(str_location);
-                                    tv_time.setText(str_time);
-                                    tv_title.setText(str_title);
+                                    tv_location_info.setText(str_location);
+                                    tv_time_info.setText(str_time);
+                                    tv_title_info.setText(str_title);
                                 }
                             }
                         });
@@ -156,7 +167,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                         contentsTitle.clear();
 
                         //닫기 버튼 - 정보 다이얼로그 끄기
-                        close_button.setOnClickListener(new View.OnClickListener() {
+                        close_button_info.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 info_dialog.dismiss();
@@ -164,7 +175,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                         });
 
                         //수정 버튼(연필 이미지) 누르면 수정 다이얼로그 띄우기
-                        edit_button.setOnClickListener(new View.OnClickListener() {
+                        edit_button_info.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 info_dialog.dismiss(); //정보 다이얼로그 닫고
@@ -184,9 +195,9 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                                 et_location_inEtDlg = editDialog.findViewById(R.id.et_location);
 
                                 //기존 db에 저장된 정보로 초기화 해줌
-                                et_title_inEtDlg.setText(tv_title.getText());
-                                et_time_inEtDlg.setText(tv_time.getText());
-                                et_location_inEtDlg.setText(tv_location.getText());
+                                et_title_inEtDlg.setText(tv_title_info.getText());
+                                et_time_inEtDlg.setText(tv_time_info.getText());
+                                et_location_inEtDlg.setText(tv_location_info.getText());
 
                                 //수정 완료 버튼을 눌렀을 때
                                 done_button_inEtDlg.setOnClickListener(new View.OnClickListener() {
@@ -194,17 +205,17 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                                     public void onClick(View view) {
                                         String key = m_cDay.getYear()+"-"+(m_cDay.getMonth()+1)+"-"+m_cDay.getDay();
                                         contents.put("day",key);
-                                        contents.put("title",et_title.getText().toString());
-                                        contents.put("time",et_time.getText().toString());
-                                        contents.put("location",et_location.getText().toString());
+                                        contents.put("title",et_title_inEtDlg.getText().toString());
+                                        contents.put("time",et_time_inEtDlg.getText().toString());
+                                        contents.put("location",et_location_inEtDlg.getText().toString());
 
                                         contentsTitle.put(key,contents);
                                         docs.update(contentsTitle);
 
                                         //수정한 내용으로 텍스트 변경
-                                        tv_title.setText(et_title_inEtDlg.getText());
-                                        tv_time.setText(et_time_inEtDlg.getText());
-                                        tv_location.setText(et_location_inEtDlg.getText());
+                                        tv_title_info.setText(et_title_inEtDlg.getText());
+                                        tv_time_info.setText(et_time_inEtDlg.getText());
+                                        tv_location_info.setText(et_location_inEtDlg.getText());
 
                                         //초기화
                                         contents.clear();
@@ -231,7 +242,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                         });
 
                         //삭제 버튼 - 삭제 의사 다시 한번 묻는 다이얼로그 켜주고 예/아니오로 분기
-                        delete_button.setOnClickListener(new View.OnClickListener() {
+                        delete_button_info.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 final Dialog delete_dialog = new Dialog(ScheduleActivity.this);

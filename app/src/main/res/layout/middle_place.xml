@@ -1,97 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
     android:id="@+id/listView"
     >
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:background="@drawable/header_background"
+        app:contentInsetEnd="10dp"
+        app:contentInsetStart="10dp">
 
-    <LinearLayout
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        >
-        <EditText
-            android:id="@+id/edit_text"
-            android:ems="10"
-            android:hint="주소를 입력하세요."
-            android:inputType="text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/et_border"
-            android:padding="10dp"
-            />
-        <View
-            android:layout_width="10dp"
-            android:layout_height="0dp"
-            />
-        <Button
-            android:id="@+id/search_button"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/mint"
-            android:textStyle="normal"
-            android:text="검색"
-            />
-    </LinearLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
-    <fragment
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/map_fragment"
-        android:name="com.naver.maps.map.MapFragment"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        app:navermap_latitude="37.54647497980168"
-        app:navermap_longitude="126.96458430912304"
-        />
+            <ImageView
+                android:id="@+id/iv_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ico_default_image"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Settings"
+                android:textColor="#ffffff"
+                android:textSize="16sp"
+                android:layout_marginStart="10dp"
+                app:layout_constraintLeft_toRightOf="@id/iv_photo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         android:layout_gravity="center"
+        android:gravity="center"
         >
-        <ImageButton
-            android:id="@+id/add_button"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:backgroundTint="@color/white"
-            android:src="@drawable/icon_location"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+
+            >
+            <EditText
+                android:id="@+id/edit_text"
+                android:ems="15"
+                android:hint="주소를 입력하세요."
+                android:inputType="text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="normal"
+                android:padding="10dp"
+                />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                />
+            <Button
+                android:id="@+id/search_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/mint"
+                android:textStyle="normal"
+                android:text="검색"
+                />
+        </LinearLayout>
+
+        <fragment
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/map_fragment"
+            android:layout_gravity="center"
+            android:name="com.naver.maps.map.MapFragment"
+            android:layout_width="400dp"
+            android:layout_height="400dp"
+            app:navermap_latitude="37.54647497980168"
+            app:navermap_longitude="126.96458430912304"
             />
         <View
-            android:layout_width="10dp"
-            android:layout_height="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
             />
-        <Button
-            android:id="@+id/result_button"
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="중간지점"
-            android:textStyle="normal"
-            android:backgroundTint="@color/mint"
-            />
-        <View
-            android:layout_width="10dp"
-            android:layout_height="1dp"
-            />
-        <Button
-            android:id="@+id/location_button"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            >
+            <ImageButton
+                android:id="@+id/add_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:backgroundTint="@color/white"
+                android:background="@drawable/button_background"
+                android:src="@drawable/icon_location"
+                />
+            <View
+                android:layout_width="40dp"
+                android:layout_height="1dp"
+                />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/result_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="중간지점"
+                android:textStyle="normal"
+                android:textColor="@color/white"
+                android:background="@drawable/button_background"
+                />
+            <View
+                android:layout_width="40dp"
+                android:layout_height="1dp"
+                />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/location_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="normal"
+                android:text="위치 선택"
+                android:textColor="@color/white"
+                android:background="@drawable/button_background"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_result"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="20dp"
             android:textStyle="normal"
-            android:text="위치 선택"
-            android:backgroundTint="@color/mint"
+            android:paddingTop="30dp"
+            android:textColor="@color/black"
             />
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_result"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
 
 
 </LinearLayout>

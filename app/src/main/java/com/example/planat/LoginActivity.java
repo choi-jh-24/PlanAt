@@ -60,9 +60,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        String keyHash = Utility.getKeyHash(this);
-        Log.d("출력",keyHash);
-
         mSessionCallback = new ISessionCallback() {
             @Override
             public void onSessionOpened() {
@@ -170,7 +167,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         }
                                     });
                             finish();
-                            startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                            Intent intent = new Intent(LoginActivity.this,ScheduleActivity.class);
+                            intent.putExtra("userEmail",email);
+                            startActivity(intent);
+//                            startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
                         } else {
                             Toast.makeText(getApplicationContext(), "로그인 실패!", Toast.LENGTH_LONG).show();
                             textviewMessage.setText("로그인 실패 유형\n - password가 맞지 않습니다.\n -서버에러");

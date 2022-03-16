@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="380dp"
-    android:layout_height="500dp"
+    android:layout_height="400dp"
     android:gravity="center"
     android:orientation="vertical"
     android:background="@drawable/dialog_round_edge"
@@ -77,7 +77,7 @@
             >
             <EditText
                 android:id="@+id/et_location"
-                android:layout_width="wrap_content"
+                android:layout_width="240dp"
                 android:layout_height="wrap_content"
                 android:textStyle="normal"
                 android:hint="지도에서 장소를 선택해주세요."
@@ -96,26 +96,29 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_height="100dp"
+        android:gravity="bottom"
         >
 
-        <Button
+        <android.widget.Button
             android:id="@+id/cancel_button"
-            android:layout_weight="1"
-            android:layout_width="0dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/mint"
-            android:layout_marginRight="10dp"
-            android:text="취소"/>
+            android:text="취소"
+            android:textColor="@color/white"
+            android:background="@drawable/button_background"/>
+        <View
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            />
 
-        <Button
+        <android.widget.Button
             android:id="@+id/done_button"
-            android:layout_weight="1"
-            android:layout_width="0dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/mint"
-            android:text="등록"/>
+            android:text="등록"
+            android:textColor="@color/white"
+            android:background="@drawable/button_background"/>
 
 
     </LinearLayout>
