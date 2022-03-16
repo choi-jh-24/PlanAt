@@ -182,11 +182,6 @@ public class MypagecheckActivity extends AppCompatActivity {
 
                         }
                     });
-
         }
-
     }
-
-
-
 }

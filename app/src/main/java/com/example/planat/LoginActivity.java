@@ -60,9 +60,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        String keyHash = Utility.getKeyHash(this);
-        Log.d("출력",keyHash);
-
         mSessionCallback = new ISessionCallback() {
             @Override
             public void onSessionOpened() {

@@ -64,6 +64,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         //유저가 있다면, null이 아니면 계속 진행
         user = firebaseAuth.getCurrentUser();
 
+        Intent intent = new Intent(ProfileActivity.this,ScheduleActivity.class);
+        intent.putExtra("userEmail",user.getEmail());
+        startActivity(intent);
+
         /* user photo url 적용된다면 이미지 변경됩니다.  */
         Glide.with(this)
                 .load(user.getPhotoUrl())

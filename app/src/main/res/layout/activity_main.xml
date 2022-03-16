@@ -10,7 +10,7 @@
         android:id="@+id/tool_bar"
         android:layout_width="match_parent"
         android:layout_height="58dp"
-        android:background="@color/mint"
+        android:background="@drawable/header_background"
         app:contentInsetEnd="10dp"
         app:contentInsetStart="10dp">
 

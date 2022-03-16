@@ -16,6 +16,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -43,6 +44,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
     private Dialog dialog; //일정 등록 다이얼로그
     private Button cancel_button,done_button,done_button_inEtDlg,cancel_button_inEtDlg;
     private ImageButton map_button,location_button_inEtDlg,edit_button_info,close_button_info,delete_button_info;
+    private ImageView iv_photo; //상단바 프로필 이미지뷰
 
     private FirebaseFirestore db;
 
@@ -106,6 +108,14 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         et_title = dialog.findViewById(R.id.et_title);
         et_time = dialog.findViewById(R.id.et_time);
         et_location = dialog.findViewById(R.id.et_location);
+
+        iv_photo = findViewById(R.id.iv_photo);
+        iv_photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ScheduleActivity.this,MyPageActivity.class));
+            }
+        });
 
         materialcalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override

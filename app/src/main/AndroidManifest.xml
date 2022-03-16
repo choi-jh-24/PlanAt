@@ -16,9 +16,6 @@
         android:theme="@style/Theme.PlanAt"
         android:usesCleartextTraffic="true" >
         <activity
-            android:name=".MypagecheckActivity"
-            android:exported="false" />
-        <activity
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
@@ -39,16 +36,18 @@
         <activity android:name=".MiddlePlaceActivity"/>
         <activity android:name=".ScheduleActivity"/>
         <activity android:name=".MyPageActivity"/>
-        <activity android:name=".kakaoShareActivity"/>
+        <activity android:name=".MypagecheckActivity"/>
+        <activity android:name=".FindActivity"/>
+        <activity android:name=".kakaoShareActivity">
+            <intent-filter>
+                <action android:name="android:intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-        <intent-filter>
-            <action android:name = "android.intent.action.VIEW"/>
-            <action android:name="android.intent.category.DEFAULT"/>
-            <action android:name = "android.intent.category.BROWSABLE" />
-            <data android:name = "@string/kakao_scheme"
-                android:host = "@string/kakaolink_host" />
-
-        </intent-filter>
+                <data android:scheme="@string/kakao_scheme"
+                    android:host="@string/kakaolink_host"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
