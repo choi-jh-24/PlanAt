@@ -51,7 +51,6 @@ public class MiddlePlaceActivity extends AppCompatActivity implements OnMapReady
     private EditText edit_text;
     private Vector<LatLng>markersPosition;
     private TextView tv_result;
-
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.middle_place);

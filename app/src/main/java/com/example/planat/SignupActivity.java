@@ -45,11 +45,11 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             startActivity(new Intent(getApplicationContext(), ProfileActivity.class)); //추가해 줄 ProfileActivity
         }
         //initializing views
-        editTextEmail = (EditText) findViewById(R.id.editTextEmail);
-        editTextPassword = (EditText) findViewById(R.id.editTextPassword);
+        editTextEmail = (EditText) findViewById(R.id.join_email);
+        editTextPassword = (EditText) findViewById(R.id.join_password);
         textviewSingin = (TextView) findViewById(R.id.textViewSignin);
         textviewMessage = (TextView) findViewById(R.id.textviewMessage);
-        buttonSignup = (Button) findViewById(R.id.buttonSignup);
+        buttonSignup = (Button) findViewById(R.id.join_button);
         progressDialog = new ProgressDialog(this);
 
         //button click event

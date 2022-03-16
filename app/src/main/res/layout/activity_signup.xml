@@ -53,6 +53,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/join_password" />
 
+    <TextView
+        android:id="@+id/textViewSignin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:text="회원이시면 여기에서 로그인 해주세요."
+        android:textAlignment="center"
+        tools:layout_editor_absoluteX="-24dp"
+        tools:layout_editor_absoluteY="500dp" />
+
     <EditText
         android:id="@+id/join_email"
         android:layout_width="0dp"
