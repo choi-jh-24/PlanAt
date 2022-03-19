@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -20,9 +21,11 @@ import com.google.firebase.auth.FirebaseAuth;
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
 
     //define view objects
+    ImageView back;
     EditText editTextEmail;
     EditText editTextPassword;
     Button buttonSignup;
+    Button buttonDelete;
     TextView textviewSingin;
     TextView textviewMessage;
     ProgressDialog progressDialog;
@@ -45,11 +48,13 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             startActivity(new Intent(getApplicationContext(), ProfileActivity.class)); //추가해 줄 ProfileActivity
         }
         //initializing views
+        back = (ImageView) findViewById(R.id.back_button);
         editTextEmail = (EditText) findViewById(R.id.join_email);
         editTextPassword = (EditText) findViewById(R.id.join_password);
         textviewSingin = (TextView) findViewById(R.id.textViewSignin);
         textviewMessage = (TextView) findViewById(R.id.textviewMessage);
         buttonSignup = (Button) findViewById(R.id.join_button);
+        buttonDelete = (Button) findViewById(R.id.delete_button);
         progressDialog = new ProgressDialog(this);
 
         //button click event
@@ -106,6 +111,16 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             //TODO
             startActivity(new Intent(this, LoginActivity.class)); //추가해 줄 로그인 액티비티
         }
+
+        if (view == buttonDelete) {
+            finish();
+
+        }
+
+        if (view == back) {
+            finish();
+        }
     }
+
 
 }
