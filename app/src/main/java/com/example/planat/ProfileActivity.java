@@ -63,6 +63,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         //유저가 있다면, null이 아니면 계속 진행
         user = firebaseAuth.getCurrentUser();
+        Log.d("print",user.getEmail());
 
         Intent intent = new Intent(ProfileActivity.this,ScheduleActivity.class);
         intent.putExtra("userEmail",user.getEmail());

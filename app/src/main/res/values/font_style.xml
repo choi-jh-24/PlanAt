@@ -2,14 +2,14 @@
 <resources>
     <!-- Custom font style 일괄적용 -->
     <style name="TextViewFontStyle" parent="@android:style/Widget.DeviceDefault.TextView">
-        <item name="android:fontFamily">@font/suncheon_r</item>
+        <item name="android:fontFamily">@font/gmarket_sans_medium</item>
     </style>
 
     <style name="ButtonFontStyle" parent="@android:style/Widget.DeviceDefault.Button.Borderless">
-        <item name="android:fontFamily">@font/suncheon_r</item>
+        <item name="android:fontFamily">@font/gmarket_sans_medium</item>
     </style>
 
     <style name="EditTextFontStyle" parent="@android:style/Widget.DeviceDefault.EditText">
-        <item name="android:fontFamily">@font/suncheon_r</item>
+        <item name="android:fontFamily">@font/gmarket_sans_medium</item>
     </style>
 </resources>
