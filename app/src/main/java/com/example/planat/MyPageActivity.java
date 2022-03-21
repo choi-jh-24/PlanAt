@@ -16,12 +16,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
@@ -34,9 +36,6 @@ public class MyPageActivity extends AppCompatActivity {
     String UID;
     UserModel userModel;
     final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    Map<String, Object> user = new HashMap<>();
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +43,8 @@ public class MyPageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mypage);
 
         UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
         iv = findViewById(R.id.imageView2);
-
         getUserInfoFromServer();
-
-
-
 
         //프로필버튼
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
@@ -101,7 +95,11 @@ public class MyPageActivity extends AppCompatActivity {
                 selectDialog.setPositiveButton(Html.fromHtml("<font color='#ff0000'>탈퇴하기</font>"), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        //cloud store에서 삭제
+                        String myEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                        db.collection("users").document(myEmail).delete();
 
+                        //fireauth에서 삭제
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         user.delete()
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {

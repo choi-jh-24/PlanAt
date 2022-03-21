@@ -9,6 +9,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,16 +18,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
@@ -46,6 +50,8 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
     private Button cancel_button,done_button,done_button_inEtDlg,cancel_button_inEtDlg;
     private ImageButton info_button,map_button,location_button_inEtDlg,edit_button_info,close_button_info,delete_button_info;
     private ImageView iv_photo; //상단바 프로필 이미지뷰
+    private TextView tv_name;//상단바 닉네임 텍스트뷰
+    UserModel userModel;
 
     private FirebaseFirestore db;
 
@@ -111,6 +117,10 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         et_location = dialog.findViewById(R.id.et_location);
 
         iv_photo = findViewById(R.id.iv_photo);
+        getUserInfoFromServer(); //상단바 프로필 사진 DB에서 가져오기
+        tv_name = findViewById(R.id.tv_name);
+
+
         iv_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -245,6 +255,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                                     @Override
                                     public void onClick(View view) {
                                         Intent intent = new Intent(ScheduleActivity.this,MiddlePlaceActivity.class);
+                                        intent.putExtra("userEmail",userEmail);
                                         mStartForResultInEditDialog.launch(intent);
                                     }
                                 });
@@ -319,6 +330,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                 contentsTitle.clear();
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
+
                     if (document.getData() != null && !document.getData().isEmpty()) {// 데이터가 최소 하나 이상 저장되어 있는 경우
                         /*들어있는 데이터의 contentsTitle을 가져와서
                         연,월,일로 쪼개서 해당 날짜 CalendarDay를 구해서 decorate해준다.*/
@@ -351,6 +363,48 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
             }
         });
     }
+
+    //기존 프로필사진 불러와서 이미지뷰에 넣는 함수
+    void getUserInfoFromServer() {
+        docs.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    Object userName = document.getData().get("nickname");
+                    //상단바 닉네임 설정
+                    if(userName != null){
+                        tv_name.setText(userName.toString());
+                    }
+                }
+            }
+        });
+        try{
+            DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+            docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    Log.d("FireSever", "onEvent");
+                    userModel = documentSnapshot.toObject(UserModel.class);
+                    if (userModel.getUserPhoto() != null && !userModel.getUserPhoto().equals("null") && !"".equals(userModel.getUserPhoto())) {
+                        FirebaseStorage.getInstance().getReference("userPhoto/" + userModel.getUserPhoto()).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Uri> task) {
+                                Glide.with(ScheduleActivity.this)
+                                        .load(task.getResult())
+                                        .circleCrop()
+                                        .into(iv_photo);
+                            }
+                        });
+
+                    }
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void onClick(View view){
         if(view == add_button){

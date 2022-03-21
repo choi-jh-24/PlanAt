@@ -15,11 +15,21 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.geometry.LatLngBounds;
 import com.naver.maps.map.CameraUpdate;
@@ -31,8 +41,17 @@ import com.naver.maps.map.overlay.CircleOverlay;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.util.FusedLocationSource;
 import com.naver.maps.map.util.MarkerIcons;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
@@ -56,6 +75,8 @@ public class MiddlePlaceActivity extends AppCompatActivity implements OnMapReady
     private EditText edit_text;
     private Vector<LatLng>markersPosition;
     private TextView tv_result;
+
+
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.middle_place);
@@ -82,6 +103,7 @@ public class MiddlePlaceActivity extends AppCompatActivity implements OnMapReady
         markersPosition = new Vector<LatLng>(); //초기화
         tv_result = findViewById(R.id.tv_result); //위치선택 버튼 클릭 시 주소 알려줄 텍스트뷰
         location_button = findViewById(R.id.location_button); //위치선택 버튼
+
     }
     @UiThread
     @Override
@@ -143,9 +165,8 @@ public class MiddlePlaceActivity extends AppCompatActivity implements OnMapReady
                         marker.setMap(naverMap);
 
                         //마커 위치정보 저장
-                        markersPosition.add(new LatLng(
-                                Double.parseDouble(lat),Double.parseDouble(lon)
-                        ));
+                        markersPosition.add(marker.getPosition());
+
                     }
                 });
 
@@ -201,7 +222,7 @@ public class MiddlePlaceActivity extends AppCompatActivity implements OnMapReady
                             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                             intent.addCategory(Intent.CATEGORY_BROWSABLE);
                             startActivity(intent);
-                            Log.d("출력",url);
+
 
 //                            List<ResolveInfo> list = getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
 //                            if (list == null || list.isEmpty()) {

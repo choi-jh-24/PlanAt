@@ -21,6 +21,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
@@ -47,13 +49,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     TextView textviewMessage;
     TextView textviewFindPassword;
     ProgressDialog progressDialog;
-    private String Imageiv_profile;
     //define firebase object
     FirebaseAuth firebaseAuth;
+    DocumentReference docs;
+    String userName; //유저 닉네임 SignupActivity로부터 받아오기
 
     //define firebase cloud store object
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    Map<String, Object> user = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,20 +100,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
 
         };
-
-
         Session.getCurrentSession().addCallback(mSessionCallback);
         Session.getCurrentSession().checkAndImplicitOpen();
 
         //initializig firebase auth object
         firebaseAuth = FirebaseAuth.getInstance();
 
-        if (firebaseAuth.getCurrentUser() != null) {
-            //이미 로그인 되었다면 이 액티비티를 종료함
-            finish();
-            //그리고 profile 액티비티를 연다.
-            startActivity(new Intent(getApplicationContext(), ProfileActivity.class)); //추가해 줄 ProfileActivity
-        }
+//        if (firebaseAuth.getCurrentUser() != null) {
+//            Log.d("이미 로그인",firebaseAuth.getCurrentUser().toString());
+//            //이미 로그인 되었다면 이 액티비티를 종료함
+//            finish();
+//            //그리고 profile 액티비티를 연다.
+//            startActivity(new Intent(LoginActivity.this, ProfileActivity.class)); //추가해 줄 ProfileActivity
+//        }
         //initializing views
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
@@ -132,11 +133,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String password = editTextPassword.getText().toString().trim();
 
         if (TextUtils.isEmpty(email)) {
-            Toast.makeText(this, "email을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "이메일을 입력해 주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
         if (TextUtils.isEmpty(password)) {
-            Toast.makeText(this, "password를 입력해 주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "비밀번호를 입력해 주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -150,44 +151,41 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         progressDialog.dismiss();
                         if(task.isSuccessful()) {
-                            user.put("password",password);
-
-                            db.collection("users").document(email)
-                                    .set(user, SetOptions.merge())
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Toast.makeText(getApplicationContext(), email+"로 로그인했습니다.", Toast.LENGTH_LONG).show();
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.w("docs error", "Error adding document", e);
-                                        }
-                                    });
                             finish();
-                            Intent intent = new Intent(LoginActivity.this,ScheduleActivity.class);
-                            intent.putExtra("userEmail",email);
-                            startActivity(intent);
-//                            startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
                         } else {
                             Toast.makeText(getApplicationContext(), "로그인 실패!", Toast.LENGTH_LONG).show();
                             textviewMessage.setText("로그인 실패 유형\n - password가 맞지 않습니다.\n -서버에러");
                         }
                     }
                 });
+        //유저 이메일 문서로부터 닉네임 필드 가져오기
+        docs = db.collection("users").document(email);
+        docs.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    Object docData = document.getData().get("nickname");
+                    userName = docData.toString();
+                    Log.d("로그인버튼눌렀을때닉넴",userName);
+                }else{
+                    Log.d("출력","firebase 로딩 실패");
+                }
+            }
+        });
+        Intent intent2 = new Intent(getApplicationContext(),ScheduleActivity.class);
+        intent2.putExtra("userName",userName);
+        intent2.putExtra("userEmail",email);
+        startActivity(intent2);
     }
     @Override
     public void onClick(View view){
         if(view == buttonSignin)
             userLogin();
         if(view == textviewSingin) {
-            finish();
             startActivity(new Intent(this, SignupActivity.class));
         }
         if(view == textviewFindPassword) {
-            finish();
             startActivity(new Intent(this, FindActivity.class));
         }
     }
