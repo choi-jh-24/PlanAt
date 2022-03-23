@@ -62,7 +62,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         firebaseAuth = FirebaseAuth.getInstance();
 
         //initializing views
-        back = (ImageView) findViewById(R.id.back_button);
+        back = findViewById(R.id.back_button);
         editTextEmail = (EditText) findViewById(R.id.join_email);
         editTextPassword = (EditText) findViewById(R.id.join_password);
         join_name = findViewById(R.id.join_name);
@@ -76,6 +76,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         buttonSignup.setOnClickListener(this);
         buttonDelete.setOnClickListener(this);
         textviewSingin.setOnClickListener(this);
+        back.setOnClickListener(this);
     }
 
     //Firebse creating a new user
