@@ -113,6 +113,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //            //그리고 profile 액티비티를 연다.
 //            startActivity(new Intent(LoginActivity.this, ProfileActivity.class)); //추가해 줄 ProfileActivity
 //        }
+
         //initializing views
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
