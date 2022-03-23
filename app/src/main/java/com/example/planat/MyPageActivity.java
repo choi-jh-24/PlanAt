@@ -16,19 +16,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class MyPageActivity extends AppCompatActivity {
     ImageView iv;
@@ -47,7 +42,7 @@ public class MyPageActivity extends AppCompatActivity {
         getUserInfoFromServer();
 
         //프로필버튼
-        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.profile_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), MypagecheckActivity.class));
@@ -62,7 +57,7 @@ public class MyPageActivity extends AppCompatActivity {
         });
 
         //로그아웃버튼
-        findViewById(R.id.button3).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.logout_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -78,6 +73,12 @@ public class MyPageActivity extends AppCompatActivity {
                     }
 
                 });
+                selectDialog.setNeutralButton(Html.fromHtml("아니요"), new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(), "취소했습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                });
                 selectDialog.setCancelable(true);
                 selectDialog.show();
 
@@ -86,7 +87,7 @@ public class MyPageActivity extends AppCompatActivity {
         });
 
         //탈퇴버튼
-        findViewById(R.id.button4).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.accountdelete_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder selectDialog = new AlertDialog.Builder(MyPageActivity.this);
@@ -116,6 +117,14 @@ public class MyPageActivity extends AppCompatActivity {
                     }
 
                 });
+
+                selectDialog.setNeutralButton(Html.fromHtml("아니요"), new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(), "취소했습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
                 selectDialog.setCancelable(true);
                 selectDialog.show();
             }
