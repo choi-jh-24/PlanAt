@@ -9,13 +9,22 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="정말 삭제하시겠습니까?"
-        android:textSize="16dp"
+        android:text="정말 탈퇴하시겠습니까?"
+        android:textSize="20dp"
         android:textColor="@color/black"
         android:textStyle="normal"
         android:textAlignment="center"
         android:paddingTop="70dp"
-        android:paddingBottom="70dp"
+        android:paddingBottom="20dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="서버에서 정보가 모두 삭제되며 탈퇴처리 됩니다."
+        android:textSize="14dp"
+        android:textColor="@color/black"
+        android:textStyle="normal"
+        android:textAlignment="center"
         />
     <LinearLayout
         android:layout_width="match_parent"

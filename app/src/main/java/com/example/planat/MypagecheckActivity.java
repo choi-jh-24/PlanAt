@@ -125,10 +125,6 @@ public class MypagecheckActivity extends AppCompatActivity {
                                         .into(iv);
                             }
                         });
-
-                    }else{
-                        Toast.makeText(getApplicationContext(), "프로필사진이 없습니다.", Toast.LENGTH_SHORT).show();
-
                     }
                 }
             });

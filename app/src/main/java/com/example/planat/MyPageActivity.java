@@ -1,13 +1,18 @@
 package com.example.planat;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -31,6 +36,8 @@ public class MyPageActivity extends AppCompatActivity {
     String UID;
     UserModel userModel;
     final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    Dialog dialog,dialog_withdrawal;
+    Button yesBtn,noBtn,yesBtn_withdrawal,noBtn_withdrawal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +47,23 @@ public class MyPageActivity extends AppCompatActivity {
         UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         iv = findViewById(R.id.imageView2);
         getUserInfoFromServer();
+
+        //커스텀 다이얼로그 생성
+        dialog = new Dialog(MyPageActivity.this);//로그아웃 확인 다이얼로그
+        dialog_withdrawal = new Dialog(MyPageActivity.this);//탈퇴 확인 다이얼로그
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_check_logout);
+
+        dialog_withdrawal.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog_withdrawal.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog_withdrawal.setContentView(R.layout.dialog_check_withdrawal);
+
+        yesBtn = dialog.findViewById(R.id.yesBtn);
+        yesBtn_withdrawal = dialog_withdrawal.findViewById(R.id.yesBtn);
+        noBtn = dialog.findViewById(R.id.noBtn);
+        noBtn_withdrawal = dialog_withdrawal.findViewById(R.id.noBtn);
 
         //프로필버튼
         findViewById(R.id.profile_button).setOnClickListener(new View.OnClickListener() {
@@ -60,29 +84,24 @@ public class MyPageActivity extends AppCompatActivity {
         findViewById(R.id.logout_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                dialog.show();
 
-                AlertDialog.Builder selectDialog = new AlertDialog.Builder(MyPageActivity.this);
-                selectDialog.setTitle("로그아웃 하시겠습니까?");
-                selectDialog.setMessage(" ");
-                selectDialog.setPositiveButton(Html.fromHtml("예"), new DialogInterface.OnClickListener() {
+                noBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+
+                yesBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
                         FirebaseAuth.getInstance().signOut();
                         Toast.makeText(getApplicationContext(), "성공적으로 로그아웃 되었습니다!", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                    }
-
-                });
-                selectDialog.setNeutralButton(Html.fromHtml("아니요"), new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(), "취소했습니다.", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
                     }
                 });
-                selectDialog.setCancelable(true);
-                selectDialog.show();
-
-
             }
         });
 
@@ -90,12 +109,11 @@ public class MyPageActivity extends AppCompatActivity {
         findViewById(R.id.accountdelete_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder selectDialog = new AlertDialog.Builder(MyPageActivity.this);
-                selectDialog.setTitle("탈퇴하시겠습니까?");
-                selectDialog.setMessage("서버에서 정보가 모두 삭제되며 탈퇴처리 됩니다.");
-                selectDialog.setPositiveButton(Html.fromHtml("<font color='#ff0000'>탈퇴하기</font>"), new DialogInterface.OnClickListener() {
+                dialog_withdrawal.show();
+
+                yesBtn_withdrawal.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public void onClick(View view) {
                         //cloud store에서 삭제
                         String myEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
                         db.collection("users").document(myEmail).delete();
@@ -111,22 +129,18 @@ public class MyPageActivity extends AppCompatActivity {
                                         }
                                     }
                                 });
-
                         FirebaseAuth.getInstance().signOut();
+                        dialog_withdrawal.dismiss();
                         startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                     }
-
                 });
 
-                selectDialog.setNeutralButton(Html.fromHtml("아니요"), new DialogInterface.OnClickListener(){
+                noBtn_withdrawal.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(), "취소했습니다.", Toast.LENGTH_SHORT).show();
+                    public void onClick(View view) {
+                        dialog_withdrawal.dismiss();
                     }
                 });
-
-                selectDialog.setCancelable(true);
-                selectDialog.show();
             }
         });
     }
@@ -150,10 +164,6 @@ public class MyPageActivity extends AppCompatActivity {
                                         .into(iv);
                             }
                         });
-
-                    }else{
-                        Toast.makeText(getApplicationContext(), "프로필사진이 없습니다.", Toast.LENGTH_SHORT).show();
-
                     }
                 }
             });

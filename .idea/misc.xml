@@ -41,6 +41,8 @@
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/activity_signup.xml" value="0.176" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/activity_sub.xml" value="0.2328125" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/dialog_check_delete.xml" value="0.12222222222222222" />
+        <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/dialog_check_logout.xml" value="0.13072916666666667" />
+        <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/dialog_check_withdrawal.xml" value="0.2" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/dialog_clock.xml" value="0.1" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/dialog_schedule.xml" value="0.2" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/dialog_schedule_info.xml" value="0.176" />
@@ -48,17 +50,15 @@
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/dialog_timepicker.xml" value="0.2265625" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/middle_place.xml" value="0.152" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/timepicker.xml" value="0.16203703703703703" />
-        <entry key="..\:/android_works/PlanAt/app/src/main/res/font/font.xml" value="0.3074074074074074" />
         <entry key="..\:/android_works/PlanAt/app/src/main/res/layout/activity_calendar.xml" value="0.3333333333333333" />
-        <entry key="..\:/android_works/PlanAt/app/src/main/res/layout/activity_find.xml" value="0.22" />
+        <entry key="..\:/android_works/PlanAt/app/src/main/res/layout/activity_find.xml" value="0.18333333333333332" />
         <entry key="..\:/android_works/PlanAt/app/src/main/res/layout/activity_landing.xml" value="0.18333333333333332" />
         <entry key="..\:/android_works/PlanAt/app/src/main/res/layout/activity_login.xml" value="0.18333333333333332" />
         <entry key="..\:/android_works/PlanAt/app/src/main/res/layout/activity_main.xml" value="0.18333333333333332" />
         <entry key="..\:/android_works/PlanAt/app/src/main/res/layout/activity_mypage.xml" value="0.18333333333333332" />
-        <entry key="..\:/android_works/PlanAt/app/src/main/res/layout/activity_mypagecheck.xml" value="0.22" />
+        <entry key="..\:/android_works/PlanAt/app/src/main/res/layout/activity_mypagecheck.xml" value="0.18333333333333332" />
         <entry key="..\:/android_works/PlanAt/app/src/main/res/layout/activity_profile.xml" value="0.18333333333333332" />
-        <entry key="..\:/android_works/PlanAt/app/src/main/res/layout/activity_signup.xml" value="0.24722222222222223" />
-        <entry key="..\:/android_works/PlanAt/app/src/main/res/layout/dialog_check_delete.xml" value="0.1" />
+        <entry key="..\:/android_works/PlanAt/app/src/main/res/layout/activity_signup.xml" value="0.3333333333333333" />
         <entry key="..\:/android_works/PlanAt/app/src/main/res/layout/dialog_piechart.xml" value="0.359375" />
         <entry key="..\:/android_works/PlanAt/app/src/main/res/layout/dialog_timepicker.xml" value="0.359375" />
         <entry key="..\:/android_works/PlanAt/app/src/main/res/layout/middle_place.xml" value="0.359375" />
