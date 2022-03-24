@@ -30,7 +30,14 @@ import java.util.Map;
 import androidx.annotation.Nullable;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
+import com.kakao.kakaolink.v2.KakaoLinkResponse;
+import com.kakao.kakaolink.v2.KakaoLinkService;
+import com.kakao.message.template.ButtonObject;
+import com.kakao.message.template.ContentObject;
+import com.kakao.message.template.FeedTemplate;
+import com.kakao.message.template.LinkObject;
 import com.kakao.network.ErrorResult;
+import com.kakao.network.callback.ResponseCallback;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.MeV2ResponseCallback;
 import com.kakao.usermgmt.response.MeV2Response;
@@ -42,7 +49,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //define view objects
     EditText editTextEmail;
     EditText editTextPassword;
-    Button buttonSignin;
+    Button buttonSignin, share_button;
     TextView textviewSingin;
     TextView textviewMessage;
     TextView textviewFindPassword;
@@ -184,7 +191,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             userLogin();
         if(view == textviewSingin) {
             finish();
-            startActivity(new Intent(this, SignupActivity.class));
+            startActivity(new Intent(this, ScheduleActivity.class));
         }
         if(view == textviewFindPassword) {
             finish();

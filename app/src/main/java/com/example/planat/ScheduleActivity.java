@@ -26,6 +26,14 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.kakao.kakaolink.v2.KakaoLinkResponse;
+import com.kakao.kakaolink.v2.KakaoLinkService;
+import com.kakao.message.template.ButtonObject;
+import com.kakao.message.template.ContentObject;
+import com.kakao.message.template.FeedTemplate;
+import com.kakao.message.template.LinkObject;
+import com.kakao.network.ErrorResult;
+import com.kakao.network.callback.ResponseCallback;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
@@ -44,7 +52,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
     private Dialog dialog; //일정 등록 다이얼로그
     private Button cancel_button,done_button,done_button_inEtDlg,cancel_button_inEtDlg;
     private ImageButton map_button,location_button_inEtDlg,edit_button_info,close_button_info,delete_button_info;
-    private ImageView iv_photo; //상단바 프로필 이미지뷰
+    private ImageView iv_share, iv_photo; //상단바 프로필 이미지뷰
 
     private FirebaseFirestore db;
 
@@ -81,10 +89,10 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        db = FirebaseFirestore.getInstance();
-        Intent intent = getIntent();
-        String userEmail = intent.getStringExtra("userEmail");
-        docs = db.collection("users").document(userEmail);
+//        db = FirebaseFirestore.getInstance();
+//        Intent intent = getIntent();
+//        String userEmail = intent.getStringExtra("userEmail");
+//        docs = db.collection("users").document(userEmail);
 
         materialcalendarView = (MaterialCalendarView) findViewById(R.id.calendarView);//달력
 
@@ -93,7 +101,8 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
 
         text = findViewById(R.id.text); //날짜 텍스트
         add_button = findViewById(R.id.add_button); //일정 등록버튼
-
+        iv_share = findViewById(R.id.share_lit);
+        iv_share.setOnClickListener(this);
         //커스텀 다이얼로그 생성
         dialog = new Dialog(ScheduleActivity.this);//시작시간 등록다이얼로그
 
@@ -349,6 +358,39 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
             Intent intent = new Intent(this,MiddlePlaceActivity.class);
             mStartForResult.launch(intent);
         }
+
+        if(view == iv_share){
+            FeedTemplate params = FeedTemplate
+                    .newBuilder(ContentObject.newBuilder("PlanAt-약속잡기 어플리케이션",
+                            "https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/081/191/791/81191791_1555664874860_1_600x600.JPG",
+                            LinkObject.newBuilder().setWebUrl("https://developers.kakao.com")
+                                    .setMobileWebUrl("https://developers.kakao.com").build())
+                            .setDescrption("오늘 7시 강남역 중간지점에서 보자!")
+                            .build())
+                    //.addButton(new ButtonObject("웹에서 보기", LinkObject.newBuilder().setWebUrl("https://developers.kakao.com").setMobileWebUrl("https://developers.kakao.com").build()))
+                    .addButton(new ButtonObject("앱에서 보기", LinkObject.newBuilder()
+                            .setWebUrl("https://developers.kakao.com")
+                            .setMobileWebUrl("https://developers.kakao.com")
+                            .setAndroidExecutionParams("key1=value1")
+                            .setIosExecutionParams("key1=value1")
+                            .build()))
+                    .build();
+
+            Map<String, String> serverCallbackArgs = new HashMap<String, String>();
+            serverCallbackArgs.put("user_id", "${current_user_id}");
+            serverCallbackArgs.put("product_id", "${shared_product_id}");
+
+
+            KakaoLinkService.getInstance().sendDefault(this, params, new ResponseCallback<KakaoLinkResponse>() {
+                @Override
+                public void onFailure(ErrorResult errorResult) {}
+
+                @Override
+                public void onSuccess(KakaoLinkResponse result) {
+                }
+            });
+        }
+
         if(view == done_button){
             //캘린더에서 선택한 날짜 String으로 변경
             String key = m_cDay.getYear()+"-"+(m_cDay.getMonth()+1)+"-"+m_cDay.getDay();
