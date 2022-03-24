@@ -60,6 +60,13 @@ public class MypagecheckActivity extends AppCompatActivity {
 
         getUserInfoFromServer();
 
+        findViewById(R.id.back_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         peb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,6 +104,8 @@ public class MypagecheckActivity extends AppCompatActivity {
         });
     }
 
+
+
     void getUserInfoFromServer() {
         //기존 프로필사진 불러와서 이미지뷰에 넣는 코드
         try{
@@ -112,13 +121,10 @@ public class MypagecheckActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Uri> task) {
                                 Glide.with(MypagecheckActivity.this)
                                         .load(task.getResult())
+                                        .circleCrop()
                                         .into(iv);
                             }
                         });
-
-                    }else{
-                        Toast.makeText(getApplicationContext(), "프로필사진이 없습니다.", Toast.LENGTH_SHORT).show();
-
                     }
                 }
             });
@@ -182,6 +188,7 @@ public class MypagecheckActivity extends AppCompatActivity {
 
                         }
                     });
+
         }
     }
 }

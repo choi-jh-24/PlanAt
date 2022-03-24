@@ -11,6 +11,7 @@
         <entry key="..\:/Users/asdz4/AndroidStudioProjects/PlanAt-main/PlanAt-main/app/src/main/res/layout/activity_main.xml" value="0.1125" />
         <entry key="..\:/Users/asdz4/AndroidStudioProjects/PlanAt-main/PlanAt-main/app/src/main/res/layout/activity_profile.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/asdz4/AndroidStudioProjects/PlanAt-main/PlanAt-main/app/src/main/res/layout/activity_sub.xml" value="0.16893115942028986" />
+<<<<<<< HEAD
         <entry key="..\:/Users/asdz4/AndroidStudioProjects/plan_at/plan_at/app/src/main/res/layout/activity_find.xml" value="0.10677083333333333" />
         <entry key="..\:/Users/asdz4/AndroidStudioProjects/plan_at/plan_at/app/src/main/res/layout/activity_kakao_share.xml" value="0.12228260869565218" />
         <entry key="..\:/Users/asdz4/AndroidStudioProjects/plan_at/plan_at/app/src/main/res/layout/activity_login.xml" value="0.12228260869565218" />
@@ -24,7 +25,10 @@
         <entry key="..\:/Users/ban88/AndroidStudioProjects/plan_at/app/src/main/res/layout/activity_login.xml" value="0.17916666666666667" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/plan_at/app/src/main/res/layout/activity_main.xml" value="0.4466666666666667" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/plan_at/app/src/main/res/layout/activity_signup.xml" value="0.17916666666666667" />
+=======
+>>>>>>> db59303eb53fbb065c5e146628a066312f78ba37
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.13240740740740742" />
+        <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/drawable-v24/icon_info.xml" value="0.1" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/drawable/button_background.xml" value="0.1" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/drawable/button_background_mint.xml" value="0.1" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/drawable/button_circle.xml" value="0.1" />
@@ -37,23 +41,26 @@
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/drawable/icon_edit.xml" value="0.1" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/drawable/icon_location.xml" value="0.1" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/drawable/shape.xml" value="0.1" />
+        <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/font/font.xml" value="0.15104166666666666" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/activity_after_kakao_login.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/activity_calendar.xml" value="0.1" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/activity_calender.xml" value="0.1109375" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/activity_find.xml" value="0.13854166666666667" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/activity_landing.xml" value="0.1787037037037037" />
-        <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/activity_login.xml" value="0.1630859375" />
+        <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/activity_login.xml" value="0.2" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/activity_login_main.xml" value="0.13854166666666667" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/activity_main.xml" value="0.176" />
-        <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/activity_mypage.xml" value="0.1" />
+        <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/activity_mypage.xml" value="0.16" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/activity_mypagecheck.xml" value="0.1" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/activity_profile.xml" value="0.13854166666666667" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/activity_profile_schedule.xml" value="0.16" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/activity_signup.xml" value="0.176" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/activity_sub.xml" value="0.2328125" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/dialog_check_delete.xml" value="0.12222222222222222" />
+        <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/dialog_check_logout.xml" value="0.13072916666666667" />
+        <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/dialog_check_withdrawal.xml" value="0.2" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/dialog_clock.xml" value="0.1" />
-        <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/dialog_schedule.xml" value="0.12222222222222222" />
+        <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/dialog_schedule.xml" value="0.2" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/dialog_schedule_info.xml" value="0.176" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/dialog_time.xml" value="0.2" />
         <entry key="..\:/Users/leese/AndroidStudioProjects/PlanAt/app/src/main/res/layout/dialog_timepicker.xml" value="0.2265625" />

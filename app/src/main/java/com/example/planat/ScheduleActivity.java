@@ -9,6 +9,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,11 +18,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -34,6 +38,8 @@ import com.kakao.message.template.FeedTemplate;
 import com.kakao.message.template.LinkObject;
 import com.kakao.network.ErrorResult;
 import com.kakao.network.callback.ResponseCallback;
+import com.google.firebase.storage.FirebaseStorage;
+
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
@@ -47,12 +53,16 @@ import java.util.Map;
 public class ScheduleActivity extends AppCompatActivity implements View.OnClickListener {
     private MaterialCalendarView materialcalendarView;
     private Button add_button;
-    private TextView text,tv_title_info,tv_time_info,tv_location_info;
+    private TextView tv_title_info,tv_time_info,tv_location_info;
     private EditText et_title,et_time,et_location,et_title_inEtDlg,et_time_inEtDlg,et_location_inEtDlg;
     private Dialog dialog; //일정 등록 다이얼로그
     private Button cancel_button,done_button,done_button_inEtDlg,cancel_button_inEtDlg;
-    private ImageButton map_button,location_button_inEtDlg,edit_button_info,close_button_info,delete_button_info;
+
+    private ImageButton info_button,map_button,location_button_inEtDlg,edit_button_info,close_button_info,delete_button_info;
     private ImageView iv_share, iv_photo; //상단바 프로필 이미지뷰
+    private TextView tv_name;//상단바 닉네임 텍스트뷰
+    UserModel userModel;
+
 
     private FirebaseFirestore db;
 
@@ -99,10 +109,14 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         //오늘 연,월,일로 m_cDay 초기화 후 해당 월의 일정 decorate
         this.handleDecorate(CalendarDay.today());
 
-        text = findViewById(R.id.text); //날짜 텍스트
         add_button = findViewById(R.id.add_button); //일정 등록버튼
+
         iv_share = findViewById(R.id.share_lit);
         iv_share.setOnClickListener(this);
+
+        info_button = findViewById(R.id.info_button); //일정 상세정보 확인 버튼
+
+
         //커스텀 다이얼로그 생성
         dialog = new Dialog(ScheduleActivity.this);//시작시간 등록다이얼로그
 
@@ -119,6 +133,10 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         et_location = dialog.findViewById(R.id.et_location);
 
         iv_photo = findViewById(R.id.iv_photo);
+        getUserInfoFromServer(); //상단바 프로필 사진 DB에서 가져오기
+        tv_name = findViewById(R.id.tv_name);
+
+
         iv_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -130,17 +148,15 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay cDay, boolean selected) {
                 m_cDay = cDay;//캘린더에서 선택한 cDay로 갱신
-                text.setText(cDay.getYear()+"-"+(cDay.getMonth()+1)+"-"+cDay.getDay());
-                text.setOnClickListener(new View.OnClickListener() {
+
+                info_button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         //정보 다이얼로그
                         final Dialog info_dialog = new Dialog(ScheduleActivity.this);
                         info_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                         info_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
                         info_dialog.setContentView(R.layout.dialog_schedule_info);
-                        info_dialog.show();
 
                         //각 위젯 정의
                         tv_title_info = info_dialog.findViewById(R.id.tv_title);
@@ -156,8 +172,19 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 if (task.isSuccessful()) {
                                     DocumentSnapshot document = task.getResult();
-                                    String key = cDay.getYear()+"-"+(cDay.getMonth()+1)+"-"+cDay.getDay();
-                                    String data = document.getData().get(key).toString();
+                                    //해당 날짜의 일정 정보가 존재하는 경우
+                                    String key = cDay.getYear() + "-" + (cDay.getMonth() + 1) + "-" + cDay.getDay();
+                                    Object docData = document.getData().get(key);
+
+                                    if(docData == null){
+                                        Toast.makeText(ScheduleActivity.this, "해당 날짜에 등록된 정보가 없습니다!", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                    //파이어베이스에 등록된 정보가 있으면 그때 다이얼로그를 켜준다.
+                                    info_dialog.show();
+
+                                    String data = docData.toString();
+                                    
                                     String[] dateInfoArray = data.split(",");
 
                                     String str_location = dateInfoArray[0].substring(10);
@@ -244,6 +271,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                                     @Override
                                     public void onClick(View view) {
                                         Intent intent = new Intent(ScheduleActivity.this,MiddlePlaceActivity.class);
+                                        //intent.putExtra("userEmail",userEmail);
                                         mStartForResultInEditDialog.launch(intent);
                                     }
                                 });
@@ -286,7 +314,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                                         delete_dialog.dismiss();
                                         dialog.dismiss();
 
-                                        //decorate 갱신을 위해 액티비티 화면 refresh
+                                        //decorate 갱신
                                         Intent intent1 = getIntent();
                                         finish();
                                         startActivity(intent1);
@@ -318,7 +346,8 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                 contentsTitle.clear();
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-                    if (!document.getData().isEmpty()) {// 데이터가 최소 하나 이상 저장되어 있는 경우
+
+                    if (document.getData() != null && !document.getData().isEmpty()) {// 데이터가 최소 하나 이상 저장되어 있는 경우
                         /*들어있는 데이터의 contentsTitle을 가져와서
                         연,월,일로 쪼개서 해당 날짜 CalendarDay를 구해서 decorate해준다.*/
                         Calendar calendar = Calendar.getInstance();
@@ -334,6 +363,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                                 String[] dateInfoArray = key.split("-");//-기준으로 문자열 자르기
                                 CalendarDay cDay = CalendarDay.from(Integer.parseInt(dateInfoArray[0]),Integer.parseInt(dateInfoArray[1])-1,Integer.parseInt(dateInfoArray[2]));
                                 //DB에 저장된 모든 day 정보에 대하여 점을 찍어준다.
+
                                 materialcalendarView.addDecorator(new EventDecorator(Color.RED, Collections.singleton(cDay)));
                             }
                         }
@@ -349,6 +379,48 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
             }
         });
     }
+
+    //기존 프로필사진 불러와서 이미지뷰에 넣는 함수
+    void getUserInfoFromServer() {
+        docs.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    Object userName = document.getData().get("nickname");
+                    //상단바 닉네임 설정
+                    if(userName != null){
+                        tv_name.setText(userName.toString());
+                    }
+                }
+            }
+        });
+        try{
+            DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+            docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    Log.d("FireSever", "onEvent");
+                    userModel = documentSnapshot.toObject(UserModel.class);
+                    if (userModel.getUserPhoto() != null && !userModel.getUserPhoto().equals("null") && !"".equals(userModel.getUserPhoto())) {
+                        FirebaseStorage.getInstance().getReference("userPhoto/" + userModel.getUserPhoto()).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Uri> task) {
+                                Glide.with(ScheduleActivity.this)
+                                        .load(task.getResult())
+                                        .circleCrop()
+                                        .into(iv_photo);
+                            }
+                        });
+
+                    }
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void onClick(View view){
         if(view == add_button){

@@ -105,6 +105,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="취소"
+            android:textStyle="normal"
             android:textColor="@color/white"
             android:background="@drawable/button_background"/>
         <View
@@ -117,6 +118,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="등록"
+            android:textStyle="normal"
             android:textColor="@color/white"
             android:background="@drawable/button_background"/>
 
