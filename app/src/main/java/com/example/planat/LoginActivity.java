@@ -161,7 +161,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if(task.isSuccessful()) {
                             finish();
                         } else {
-                            textviewMessage.setText("로그인 실패 유형\n - password가 맞지 않습니다.\n -서버에러");
+                            Toast.makeText(LoginActivity.this, "\"로그인 실패 유형\\n - password가 맞지 않습니다.\\n -서버에러\"", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
