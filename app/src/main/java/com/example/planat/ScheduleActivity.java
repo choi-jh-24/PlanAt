@@ -99,10 +99,10 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        db = FirebaseFirestore.getInstance();
-//        Intent intent = getIntent();
-//        String userEmail = intent.getStringExtra("userEmail");
-//        docs = db.collection("users").document(userEmail);
+        db = FirebaseFirestore.getInstance();
+        Intent intent = getIntent();
+        String userEmail = intent.getStringExtra("userEmail");
+        docs = db.collection("users").document(userEmail);
 
         materialcalendarView = (MaterialCalendarView) findViewById(R.id.calendarView);//달력
 
