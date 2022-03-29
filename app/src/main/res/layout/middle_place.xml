@@ -48,7 +48,7 @@
             >
             <EditText
                 android:id="@+id/edit_text"
-                android:ems="15"
+                android:ems="10"
                 android:hint="주소를 입력하세요."
                 android:inputType="text"
                 android:layout_width="wrap_content"

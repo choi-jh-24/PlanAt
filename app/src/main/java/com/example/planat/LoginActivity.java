@@ -190,7 +190,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if(view == buttonSignin)
             userLogin();
         if(view == textviewSingin) {
-            finish();
             startActivity(new Intent(this, SignupActivity.class));
 
         }
