@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/dialog_round_edge"
+    >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        >
+        <View
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            />
+
+        <ImageButton
+            android:id="@+id/edit_button"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:backgroundTint="@color/white"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_edit" />
+        <ImageButton
+            android:id="@+id/delete_button"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:backgroundTint="@color/white"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_delete" />
+        <ImageButton
+            android:id="@+id/close_button"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/icon_close"
+            android:scaleType="fitCenter"
+            android:backgroundTint="@color/white"
+            android:layout_marginRight="20dp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        >
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:text="제목"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            />
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="50dp"
+            android:text="시간"
+            android:textSize="25dp"
+            />
+        <TextView
+            android:id="@+id/tv_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:text="장소"
+            android:textSize="25dp"
+            />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="10dp"
+            />
+    </LinearLayout>
+
+</LinearLayout>

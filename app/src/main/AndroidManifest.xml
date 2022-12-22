@@ -3,6 +3,8 @@
     package="com.example.planat">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -10,22 +12,42 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PlanAt">
+        android:name=".CustomApplication"
+        android:theme="@style/Theme.PlanAt"
+        android:usesCleartextTraffic="true" >
         <activity
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="6133e05b52428b0c484aa94b939d89a6" />
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="mnu1q7kinz" />
+
+        <activity android:name=".KakoResultActivity"/>
         <activity android:name=".SignupActivity"/>
         <activity android:name=".ProfileActivity"/>
-        <activity android:name=".DialogActivity"/>
         <activity android:name=".MiddlePlaceActivity"/>
         <activity android:name=".ScheduleActivity"/>
+        <activity android:name=".MyPageActivity"/>
+        <activity android:name=".MypagecheckActivity"/>
+        <activity android:name=".FindActivity"/>
+        <activity android:name=".kakaoShareActivity">
+            <intent-filter>
+                <action android:name="android:intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
+                <data android:scheme="@string/kakao_scheme"
+                    android:host="@string/kakaolink_host"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="380dp"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_round_edge"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="정말 로그아웃하시겠습니까?"
+        android:textSize="16dp"
+        android:textColor="@color/black"
+        android:textStyle="normal"
+        android:textAlignment="center"
+        android:paddingTop="70dp"
+        android:paddingBottom="70dp"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center"
+        >
+
+        <android.widget.Button
+            android:id="@+id/noBtn"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_background"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            android:text="아니오" />
+        <View
+            android:layout_width="20dp"
+            android:layout_height="0dp"
+            />
+
+        <android.widget.Button
+            android:id="@+id/yesBtn"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_background"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            android:text="네" />
+    </LinearLayout>
+</LinearLayout>

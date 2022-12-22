@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="380dp"
+    android:layout_height="400dp"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_round_edge"
+    >
+
+    <LinearLayout
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="제목"
+            android:textSize="18dp"
+            android:textStyle="bold"/>
+        <View
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            />
+        <EditText
+            android:id="@+id/et_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="normal"
+            android:hint="일정을 입력하세요."
+            android:ems="13"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="시간"
+            android:textSize="18dp"
+            android:textStyle="bold"/>
+        <View
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            />
+        <EditText
+            android:id="@+id/et_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="시간을 입력하세요."
+            android:textStyle="normal"
+            android:ems="13"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="장소"
+            android:textSize="18dp"
+            android:textStyle="bold"/>
+        <View
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <EditText
+                android:id="@+id/et_location"
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:textStyle="normal"
+                android:hint="지도에서 장소를 선택해주세요."
+                />
+            <ImageButton
+                android:id="@+id/map_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/icon_location"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:gravity="bottom"
+        >
+
+        <android.widget.Button
+            android:id="@+id/cancel_button"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="취소"
+            android:textStyle="normal"
+            android:textColor="@color/white"
+            android:background="@drawable/button_background"/>
+        <View
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            />
+
+        <android.widget.Button
+            android:id="@+id/done_button"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="등록"
+            android:textStyle="normal"
+            android:textColor="@color/white"
+            android:background="@drawable/button_background"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>
